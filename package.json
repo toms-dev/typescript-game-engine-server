@@ -1,0 +1,9 @@
+{
+  "name": "application-name",
+  "version": "0.0.1",
+  "dependencies": {
+    "reflect-metadata": "^0.1.2",
+    "tsd": "^0.6.5",
+    "websocket": "^1.0.22"
+  }
+}
