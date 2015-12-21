@@ -1,14 +1,13 @@
 import World from "./World";
 import Client from "./Client";
-import ClientController from "./components/ClientController";
-import ShipUserAction from "./components/ShipUserAction";
-import AutoLooter from "./components/AutoLooter";
-import Inventory from "./components/Inventory";
-import Collision from "./components/Collision";
+import ClientController from "./components/generic/ClientController";
+import AutoLooter from "./components/common/AutoLooter";
+import Inventory from "./components/common/Inventory";
+import Collision from "./components/generic/Collision";
 import Vector3 from "./math/Vector3";
 import Timer from "./time/Timer";
 import Entity from "./Entity";
-import Level from "./components/Level";
+import Level from "./components/common/Level";
 
 export default class GameServer {
 
@@ -53,11 +52,12 @@ export default class GameServer {
 		// TODO: Generic: expose a hook or something? (the ship was created and added to the world here)
 
 		// TODO: Generic: create+bind the client controller to some entities if needed ?
-		var controller = new ClientController(client, ship, ShipUserAction, this.world);
+		console.log("WARNING: missing JoinGame code");
+		/*var controller = new ClientController(client, ship, ShipUserAction, this.world);
 		client.setController(controller);
 
 		ship.addComponent(controller);
-		client.setControlledEntity(ship);
+		client.setControlledEntity(ship);*/
 
 		this.updateSingleClient(client);
 	}
@@ -87,11 +87,6 @@ export default class GameServer {
 
 		// TODO: Generic: start subcomponent (eg: boardsSpawner.start was here)
 
-		var botCount = 2;
-		for (var i = 0; i < botCount; i++) {
-			this.spawnBot(now);
-		}
-
 		// Update now
 		now = new Date().getTime();
 		this.lastUpdate = now;
@@ -118,8 +113,7 @@ export default class GameServer {
 
 		this.world.tick(delta, now);
 
-		// TODO: refactor this to keep GameServer more generic
-		this.boardsSpawner.tick(delta, now);
+		// TODO: Generic: tick subcomponents (eg: boardsSpawner.tick(delta, now) was here)
 
 		this.updatePublicTimers(delta, now);
 
@@ -165,8 +159,7 @@ export default class GameServer {
 	private updateClients(now: number): void {
 		var serverState = {
 			serverTime: now,
-			world: this.world.flushState(),
-			leaderBoard: this.getLeaderBoard()
+			world: this.world.flushState()
 		};
 
 		for (var i = 0; i < this.clients.length; ++i) {
@@ -178,8 +171,7 @@ export default class GameServer {
 	private updateSingleClient(c: Client): void {
 		var state = {
 			serverTime: <number> null,
-			world: this.world.getState(),
-			leaderBoard: this.getLeaderBoard()
+			world: this.world.getState()
 		};
 		c.sendServerState(state);
 	}
@@ -191,20 +183,7 @@ export default class GameServer {
 		}
 	}
 
-	private getLeaderBoard(): any[] {
-		// v1: based on wooden boards count
-		// Create an array with player name and wooden boards quantity
-		var ships = <Ship[]> this.world.getEntities().filter((e: Entity) => {
-			return e.hasComponent(Inventory);
-		});
-		var scores = ships.map((s: Ship) => {
-			var inv: Inventory = s.getComponent(Inventory);
-			return [s.name, inv.quantity, s.getComponent(Level).getValue()];
-		});
-		// Sort the previously created array based on quantity
-		return scores.sort((a: any[], b: any[]) => {
-			return b[1] - a[1]
-		});
-	}
+	// TODO: Generic: do a LeaderBoardComponent that can be added to World as a component (not the GameServer as the
+	// GameServer may run different World (= Levels).
 
 }

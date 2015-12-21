@@ -1,8 +1,8 @@
-import IComponent from "./IComponent";
-import World from "../World";
+import IComponent from "./../IComponent";
+import World from "../../World";
 import Movement from "./Movement";
-import Entity from "../Entity";
-import CallbackManager from "../utils/CallbackManager"
+import Entity from "../../Entity";
+import CallbackManager from "../../utils/CallbackManager"
 
 export default class Collision implements IComponent {
 

@@ -1,7 +1,7 @@
 import Entity, {EntityType} from "../Entity";
 import Vector3 from "../math/Vector3";
-import Collision from "../components/Collision";
-import Movement from "../components/Movement";
+import Collision from "../components/generic/Collision";
+import Movement from "../components/generic/Movement";
 import World from "../World";
 import Health from "../components/common/Health";
 export default class Projectile extends Entity {
@@ -21,7 +21,7 @@ export default class Projectile extends Entity {
 
 	constructor(world:World, position:Vector3, targetDirection:Vector3, range:number, speed:number, size:number,
 				damages:number, source:Entity) {
-		super(world, EntityType.BULLET);
+		super(world, new EntityType("BULLET"));
 		this.range = range;
 		this.speed = speed;
 		this.size = size;

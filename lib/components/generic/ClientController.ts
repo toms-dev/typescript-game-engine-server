@@ -1,15 +1,15 @@
-import Entity from "../Entity";
-import Client from "../Client";
-import IComponent from "./IComponent";
+import Entity from "../../Entity";
+import Client from "../../Client";
+import IComponent from "./../IComponent";
 
-import {InputAction} from "../../../public/js/input/Keyboard";
+import InputAction from "../../client/InputAction";
 import Movement from "./Movement";
-import Vector3 from "../math/Vector3";
-import IUserAction from "./IUserAction";
-import World from "../World";
+import Vector3 from "../../math/Vector3";
+import IUserAction from "./../IUserAction";
+import World from "../../World";
 
-import CommandType from "../commands/CommandType";
-import {CommandRequest, ICommandResponse} from "../commands/Command";
+import CommandType from "../../commands/CommandType";
+import {CommandRequestJSON, CommandResponseJSON} from "../../commands/Command";
 
 export default class ClientController implements IComponent {
 
@@ -35,9 +35,9 @@ export default class ClientController implements IComponent {
 
 	// commandName => ...args
 	//private commandsBuffer: {[commandName: string]: any[]};
-	private commandsBuffer: CommandRequest[]; //{[commandName: string]: any[]};
+	private commandsBuffer: CommandRequestJSON[]; //{[commandName: string]: any[]};
 	/** The buffer contains all the responses from the commands to be sent on next state flush */
-	private commandResponsesBuffer: ICommandResponse[];
+	private commandResponsesBuffer: CommandResponseJSON[];
 
 	constructor(client: Client, entity: Entity, userActionClass: new (entity: Entity) => IUserAction, world: World) {
 		//constructor(client:Client, entity:Entity, userActionClass: new () => IUserAction, world: World) {
@@ -57,6 +57,10 @@ export default class ClientController implements IComponent {
 	}
 
 	public loadState(inputState: any): void {
+		console.log("DEBUG: Got input state: ", inputState);
+		console.log("DEBUG: Skipping!");
+		return;
+		/*
 		// Keyboard
 		var rawKeys = inputState.keys.downKeys;
 		var cleanKeys: any = [];
@@ -131,7 +135,7 @@ export default class ClientController implements IComponent {
 					//this.commandsBuffer[commandName] = commandParams;
 				}
 			}
-		}
+		}*/
 	}
 
 	tick(delta: number): void {
@@ -143,25 +147,28 @@ export default class ClientController implements IComponent {
 	private processMovementInput(): void {
 		var downKeys = this.bufferedDownKeys;
 		this.bufferedDownKeys = [];
+
+		// TODO: Generic: map the inputs to a move vector
 		var vectorKeys: any = {};
-		vectorKeys[InputAction.UP] = [0, 1];
+		/*vectorKeys[InputAction.UP] = [0, 1];
 		vectorKeys[InputAction.DOWN] = [0, -1];
 		vectorKeys[InputAction.LEFT] = [-1, 0];
-		vectorKeys[InputAction.RIGHT] = [1, 0];
+		vectorKeys[InputAction.RIGHT] = [1, 0];*/
 		//console.log("Vector keys:", vectorKeys);
 
 		// Browse all the down keys to update the move vector
 		var directionComponents = [0, 0];
 		for (var i = 0; i < downKeys.length; ++i) {
 			var key = downKeys[i];
-			var keyName = InputAction[key];
+			// TODO: Generic: this is probably broken
+			/*var keyName = InputAction[key];
 			if (!vectorKeys.hasOwnProperty(keyName)) {
 				console.log("Key not found:", key, InputAction[key]);
 				continue;
 			}
 			var keyVector = vectorKeys[keyName];
 			directionComponents[0] += keyVector[0];
-			directionComponents[1] += keyVector[1];
+			directionComponents[1] += keyVector[1];*/
 		}
 
 		var movement: Movement = this.entity.getComponent(Movement);
@@ -224,7 +231,7 @@ export default class ClientController implements IComponent {
 		this.commandsBuffer = [];
 	}
 
-	flushCommandResponses(): ICommandResponse[] {
+	flushCommandResponses(): CommandResponseJSON[] {
 		var responses = this.commandResponsesBuffer;
 		this.commandResponsesBuffer = [];
 		if (responses.length > 0) {

@@ -1,6 +1,6 @@
 
-import IComponent from "./IComponent";
-import CallbackManager from "../utils/CallbackManager";
+import IComponent from "./../IComponent";
+import CallbackManager from "../../utils/CallbackManager";
 
 export default class Level implements IComponent {
 

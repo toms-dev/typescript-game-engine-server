@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
+    "module": "commonjs",
     "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true,
@@ -8,6 +9,9 @@
     "experimentalDecorators": true
   },
   "exclude": [
-    "piratefight"
+    "node_modules",
+    "typings",
+    "piratefight",
+    "samples/piratefight"
   ]
 }

@@ -1,11 +1,11 @@
-import IComponent from "./IComponent";
-import Entity from "../Entity";
-import Health from "./common/Health";
-import Projectile from "../entities/Projectile";
-import Movement from "./Movement";
-import World from "../World";
-import Collision from "./Collision";
-import Vector3 from "../math/Vector3";
+import IComponent from "./../IComponent";
+import Entity from "../../Entity";
+import Health from "./Health";
+import Projectile from "../../entities/Projectile";
+import Movement from "./../generic/Movement";
+import World from "../../World";
+import Collision from "./../generic/Collision";
+import Vector3 from "../../math/Vector3";
 
 export default class Shooter {
 

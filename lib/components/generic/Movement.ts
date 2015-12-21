@@ -1,6 +1,6 @@
 
-import IComponent from "./IComponent";
-import Vector3 from "../math/Vector3";
+import IComponent from "./../IComponent";
+import Vector3 from "../../math/Vector3";
 export default class Movement implements IComponent {
 
 	private position: Vector3;

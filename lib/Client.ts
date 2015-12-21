@@ -3,17 +3,17 @@ import websocket = require('websocket');
 
 import GameServer from "./GameServer";
 import InternalMessageType from "./network/InternalMessageType";
+import InternalMessageTypeValue from "./network/InternalMessageTypeValue";
 import MessageType from "./network/MessageType";
 import Entity from "./Entity";
-import ClientController from "./components/ClientController";
+import ClientController from "./components/generic/ClientController";
 
 interface ServerState {
 	serverTime: number,
 	world: {
 		entities: any[],
 		entitiesToDespawn: any[]
-	},
-	leaderBoard: any[]
+	}
 }
 
 export default class Client {
@@ -45,10 +45,10 @@ export default class Client {
 		this.connection = connection;
 
 		this.handlers = {};
-		this.handlers[InternalMessageType.HANDSHAKE] = this.processHandshake;
-		this.handlers[InternalMessageType.JOIN_GAME] = this.processJoinGame;
-		this.handlers[InternalMessageType.INPUT_STATE] = this.processInputState;
-		this.handlers[InternalMessageType.PING_MEASURE] = this.processPingMeasure;
+		this.handlers[InternalMessageTypeValue.HANDSHAKE] = this.processHandshake;
+		this.handlers[InternalMessageTypeValue.JOIN_GAME] = this.processJoinGame;
+		this.handlers[InternalMessageTypeValue.INPUT_STATE] = this.processInputState;
+		this.handlers[InternalMessageTypeValue.PING_MEASURE] = this.processPingMeasure;
 
 		this.ping = 0;
 		this.pingSentTime = null;
@@ -87,7 +87,7 @@ export default class Client {
 
 		var handler = this.handlers[json.type];
 		if (! handler) {
-			throw new Error("No handler defined for action " + InternalMessageType[json.type]);
+			throw new Error("No handler defined for action " + InternalMessageTypeValue[json.type]);
 		}
 
 		handler.call(this, payload, requestID);
@@ -128,15 +128,14 @@ export default class Client {
 		var state = {
 			serverTime: serverState.serverTime,
 			world: serverState.world,
-			leaderBoard: serverState.leaderBoard,
 			commandResponses: this.controller.flushCommandResponses()
 		};
-		this.sendMessage(InternalMessageType.SERVER_STATE, state);
+		this.sendMessage(new InternalMessageType(InternalMessageTypeValue.SERVER_STATE), state);
 	}
 
 	setControlledEntity(entity:Entity):void {
 		this.controlledEntity = entity;
-		this.sendMessage(InternalMessageType.CONTROLLED_ENTITY, {entityID: entity.getGUID()});
+		this.sendMessage(new InternalMessageType(InternalMessageTypeValue.CONTROLLED_ENTITY), {entityID: entity.getGUID()});
 	}
 
 	setController(controller:ClientController):void {
@@ -152,7 +151,7 @@ export default class Client {
 			return;
 		}
 		this.pingSentTime = new Date();
-		this.sendMessage(InternalMessageType.PING_MEASURE, {});
+		this.sendMessage(new InternalMessageType(InternalMessageTypeValue.PING_MEASURE), {});
 	}
 
 	getControlledEntity():Entity {
@@ -168,8 +167,8 @@ export default class Client {
 		};
 
 
-		this.respond(InternalMessageType.HANDSHAKE, response, requestID);
-		this.sendMessage(InternalMessageType.CONTROLLED_ENTITY, {entityID: this.controlledEntity.getGUID()});
+		this.respond(new InternalMessageType(InternalMessageTypeValue.HANDSHAKE), response, requestID);
+		this.sendMessage(new InternalMessageType(InternalMessageTypeValue.CONTROLLED_ENTITY), {entityID: this.controlledEntity.getGUID()});
 	}
 
 	private processJoinGame(data: any, requestID: number): void {
@@ -180,7 +179,7 @@ export default class Client {
 		this.playerName = data.playerName;
 		this.gameServer.joinGame(this, data);
 		// ACK the client request
-		this.respond(InternalMessageType.JOIN_GAME, true, requestID);
+		this.respond(new InternalMessageType(InternalMessageTypeValue.JOIN_GAME), true, requestID);
 	}
 
 	private processInputState(data: any): void {
@@ -195,6 +194,6 @@ export default class Client {
 		this.ping = Math.round(diff/2);
 		this.pingSentTime = null;
 
-		this.sendMessage(InternalMessageType.PING_VALUE, {ping: this.ping});
+		this.sendMessage(new InternalMessageType(InternalMessageTypeValue.PING_VALUE), {ping: this.ping});
 	}
 }

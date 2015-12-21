@@ -1,12 +1,9 @@
 
-enum InternalMessageType {
-	HANDSHAKE,
-	JOIN_GAME,
-	INPUT_STATE,
-	SERVER_STATE,
-	PING_MEASURE,
-	PING_VALUE,
-	CONTROLLED_ENTITY,
-}
+import MessageType from "./MessageType";
+import InternalMessageTypeValue from "./InternalMessageTypeValue";
+export default class InternalMessageType extends MessageType {
 
-export default MessageType;
+	constructor(enumValue: InternalMessageTypeValue) {
+		super("internal_"+InternalMessageTypeValue[enumValue]);
+	}
+}

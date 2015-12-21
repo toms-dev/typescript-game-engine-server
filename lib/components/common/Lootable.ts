@@ -1,7 +1,7 @@
 
-import IComponent from "./IComponent";
-import Collision from "./Collision";
-import Entity from "../Entity";
+import IComponent from "./../IComponent";
+import Collision from "./../generic/Collision";
+import Entity from "../../Entity";
 export default class Lootable implements IComponent {
 
 	private quantity: number;

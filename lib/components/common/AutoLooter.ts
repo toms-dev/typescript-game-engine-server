@@ -1,8 +1,8 @@
 
-import IComponent from "./IComponent";
-import Entity from "../Entity";
+import IComponent from "./../IComponent";
+import Entity from "../../Entity";
 import Lootable from "./Lootable";
-import Collision from "./Collision";
+import Collision from "./../generic/Collision";
 import Inventory from "./Inventory";
 
 /**

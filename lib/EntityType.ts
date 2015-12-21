@@ -1,10 +1,5 @@
 
-export default class EntityType {
+import ValueType from "./utils/ValueType";
 
-	public name: string;
-
-	constructor(name:string) {
-		this.name = name;
-	}
-
+export default class EntityType extends ValueType {
 }

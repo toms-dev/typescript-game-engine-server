@@ -87,7 +87,7 @@ export default class Entity {
 	}
 
 	getTypeName(): string {
-		return this.type.name;
+		return this.type.value;
 	}
 
 	toString(): string {
