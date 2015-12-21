@@ -5,8 +5,9 @@ class Lol {
 	public derp: string;
 }
 
+import * as Components from "./lib/components/_Components";
+import * as Declare from "./lib/decorators/_Decorators";
+
 import Entity from "./lib/Entity";
 
-export {Entity};
-export {Lol};
-//export {Entity}
+export {Entity, Components, Declare};

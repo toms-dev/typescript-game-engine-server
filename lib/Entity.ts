@@ -2,6 +2,7 @@
 import IComponent from "./components/IComponent";
 import World from "./World";
 import EntityType from "./EntityType";
+import * as EntityProperty from "./decorators/metamodel/EntityProperty";
 
 export {EntityType};
 export default class Entity {
@@ -43,6 +44,20 @@ export default class Entity {
 		var state: any = {};
 		state.guid = this.guid;
 		state.type = this.type;
+
+		// Add data from public properties
+		var properties = Reflect.getMetadata("properties", this.constructor);
+		var i: number;
+		for (i = 0; i < properties.length; i++) {
+			var entityProp: EntityProperty.BaseClass = properties[i];
+			// Check that the property is enabled client-side.
+			if (entityProp.clientSide) {
+				// Dynamically retrieve the property value
+				state[entityProp.name] = (<any> this)[entityProp.name];
+			}
+		}
+
+		// Add data from components
 		for (var i = 0; i < this.components.length; ++i) {
 			var cState = this.components[i].getState();
 			for (var prop in cState) {
