@@ -3,8 +3,9 @@
 import Entity from "../Entity";
 import * as EntityProperty from "./metamodel/EntityProperty";
 
-export function EntityClassDecorator(constructor: any): void {
-	console.log("Declaring Entity!", constructor.name);
+export function EntityClassDecorator(constructor: new (...args: any[]) => Entity): void {
+	var anyConstructor = <any> constructor;
+	console.log("Declaring Entity!", anyConstructor.name);
 	console.log("Properties:", Reflect.getMetadata("properties", constructor));
 }
 
