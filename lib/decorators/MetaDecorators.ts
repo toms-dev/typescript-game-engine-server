@@ -1,15 +1,22 @@
 
 
 import Entity from "../Entity";
-import * as EntityProperty from "./metamodel/EntityProperty";
+import * as Property from "./metamodel/Property";
+import IComponent from "../components/IComponent";
 
-export function EntityClassDecorator(constructor: new (...args: any[]) => Entity): void {
+export function EntityDecorator(constructor: new (...args: any[]) => Entity): void {
 	var anyConstructor = <any> constructor;
 	console.log("Declaring Entity!", anyConstructor.name);
 	console.log("Properties:", Reflect.getMetadata("properties", constructor));
 }
 
-function EntityPropertyDecorator(prototype: any, key: string): void {
+export function ComponentDecorator(constructor: new (...args: any[]) => IComponent): void {
+	var anyConstructor = <any> constructor;
+	console.log("Declaring Component!", anyConstructor.name);
+	console.log("Properties:", Reflect.getMetadata("properties", constructor));
+}
+
+function PropertyDecorator(prototype: any, key: string): void {
 	var constructor = prototype.constructor;
 
 	// We have to check that the property is not actually a function.
@@ -19,7 +26,7 @@ function EntityPropertyDecorator(prototype: any, key: string): void {
 	}
 
 	// Create the property
-	var p = new EntityProperty.Shared(constructor, key);
+	var p = new Property.Shared(constructor, key);
 
 	// Get or initialize the entity properties
 	if (! Reflect.hasMetadata("properties", constructor)) {
@@ -34,6 +41,7 @@ function EntityPropertyDecorator(prototype: any, key: string): void {
 }
 
 export {
-	EntityClassDecorator as Class,
-	EntityPropertyDecorator as Property
+	EntityDecorator as Entity,
+	ComponentDecorator as Component,
+	PropertyDecorator as Property
 }

@@ -3,16 +3,20 @@
 import {Declare} from "../../../index";
 import {Entity} from "../../../index";
 import {Components} from "../../../index";
+import ColoredComponent from "../components/ColoredComponent";
+import ColorChanger from "../components/ColorChanger";
 
-@Declare.Entity.Class
+@Declare.Entity
 export default class MyBox extends Entity {
 
-	@Declare.Entity.Property
-	public boxColor: string;
+	@Declare.Property
+	public derp = "lol";
 
 	constructor(boxColor:string) {
 		super(null, null);
-		this.boxColor = boxColor;
+		var colorComponent = new ColoredComponent(boxColor);
+		this.addComponent(colorComponent);
+		this.addComponent(new ColorChanger(colorComponent));
 	}
 
 	public setup() {

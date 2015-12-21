@@ -1,4 +1,8 @@
 
-import * as Entity from "./EntityDecorators";
+import * as Meta from "./MetaDecorators";
 
-export {Entity};
+var Entity = Meta.Entity,
+	Component = Meta.Component,
+	Property = Meta.Property;
+
+export {Entity, Component, Property};
