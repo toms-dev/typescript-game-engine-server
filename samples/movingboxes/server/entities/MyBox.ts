@@ -1,8 +1,8 @@
 
 
-import {Declare} from "../../../index";
-import {Entity} from "../../../index";
-import {Components} from "../../../index";
+import {Declare} from "../../../../index";
+import {Entity} from "../../../../index";
+import {Components} from "../../../../index";
 import ColoredComponent from "../components/ColoredComponent";
 import ColorChanger from "../components/ColorChanger";
 

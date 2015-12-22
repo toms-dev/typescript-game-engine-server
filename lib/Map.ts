@@ -8,3 +8,5 @@ abstract class Map {
 	abstract setup(): void ;
 
 }
+
+export default Map;

@@ -8,9 +8,11 @@ import Vector3 from "./math/Vector3";
 import Timer from "./time/Timer";
 import Entity from "./Entity";
 import Level from "./components/common/Level";
+import DecorationContext from "./decorators/DecorationContext";
 
 export default class GameServer {
 
+	private context: DecorationContext;
 	/**
 	 * List of clients that will receive game states.
 	 */
@@ -37,6 +39,13 @@ export default class GameServer {
 		this.world = new World();
 		// TODO: Generic: setup local vars (the boardsspawner was setup here)
 		this.publicTimers = [];
+	}
+
+	loadProject(path:string):void {
+		DecorationContext.start();
+		require(__dirname+"/../"+path);
+		this.context = DecorationContext.build();
+		console.log("Context loaded.");
 	}
 
 	/*addClient(client:Client):void {
@@ -185,5 +194,4 @@ export default class GameServer {
 
 	// TODO: Generic: do a LeaderBoardComponent that can be added to World as a component (not the GameServer as the
 	// GameServer may run different World (= Levels).
-
 }

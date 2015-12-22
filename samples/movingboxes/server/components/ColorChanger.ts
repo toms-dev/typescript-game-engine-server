@@ -1,10 +1,10 @@
 
-import IComponent from "../../../lib/components/IComponent";
+import IComponent from "../../../../lib/components/IComponent";
 import ColoredComponent from "./ColoredComponent";
-import Component from "../../../lib/components/Component";
+import Component from "../../../../lib/components/Component";
 
 /**
- * This components makes a colored component change color on user input.
+ * This server-side components makes a colored component change color on user input.
  */
 export default class ColorChanger extends Component {
 
@@ -25,10 +25,6 @@ export default class ColorChanger extends Component {
 
 	tick(delta:number, now:number):void {
 		this.switchColor();
-	}
-
-	getState():any {
-		return undefined;
 	}
 
 }

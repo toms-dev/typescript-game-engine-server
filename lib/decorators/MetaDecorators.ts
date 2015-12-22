@@ -1,19 +1,43 @@
 
 
 import Entity from "../Entity";
+import Map from "../Map";
 import * as Property from "./metamodel/Property";
 import IComponent from "../components/IComponent";
+import DecorationContext from "./DecorationContext";
 
 export function EntityDecorator(constructor: new (...args: any[]) => Entity): void {
 	var anyConstructor = <any> constructor;
 	console.log("Declaring Entity!", anyConstructor.name);
+	if (! Reflect.hasMetadata("properties", constructor)) {
+		Reflect.defineMetadata("properties", [], constructor);
+	}
 	console.log("Properties:", Reflect.getMetadata("properties", constructor));
+
+	DecorationContext.instance.entitiesClasses.push(constructor);
 }
 
 export function ComponentDecorator(constructor: new (...args: any[]) => IComponent): void {
 	var anyConstructor = <any> constructor;
 	console.log("Declaring Component!", anyConstructor.name);
+	if (! Reflect.hasMetadata("properties", constructor)) {
+		Reflect.defineMetadata("properties", [], constructor);
+	}
 	console.log("Properties:", Reflect.getMetadata("properties", constructor));
+
+	console.log("TODO: is it useful to declare components?");
+	DecorationContext.instance.componentsClasses.push(constructor);
+}
+
+export function MapDecorator(constructor: new (...args: any[]) => Map): void {
+	var anyConstructor = <any> constructor;
+	console.log("Declaring map!", anyConstructor.name);
+	if (! Reflect.hasMetadata("properties", constructor)) {
+		Reflect.defineMetadata("properties", [], constructor);
+	}
+	console.log("Properties:", Reflect.getMetadata("properties", constructor));
+
+	DecorationContext.instance.mapsClasses.push(constructor);
 }
 
 function PropertyDecorator(prototype: any, key: string): void {
@@ -43,5 +67,6 @@ function PropertyDecorator(prototype: any, key: string): void {
 export {
 	EntityDecorator as Entity,
 	ComponentDecorator as Component,
+	MapDecorator as Map,
 	PropertyDecorator as Property
 }

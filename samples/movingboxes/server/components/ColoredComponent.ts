@@ -1,10 +1,7 @@
-import IComponent from "../../../lib/components/IComponent";
-/**
- * Created by Tom on 21/12/2015.
- */
 
-import {Declare} from "../../../index";
-import Component from "../../../lib/components/Component";
+import {Declare} from "../../../../index";
+import IComponent from "../../../../lib/components/IComponent";
+import Component from "../../../../lib/components/Component";
 
 @Declare.Component
 export default class ColoredComponent extends Component {
