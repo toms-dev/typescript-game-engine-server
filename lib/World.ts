@@ -1,5 +1,6 @@
 import Entity from "./Entity";
 import Vector3 from "./math/Vector3";
+import Map from "./Map";
 
 // TODO: massive refactor to make this flexible as a real game engine would be...
 export default class World {
@@ -10,6 +11,14 @@ export default class World {
 	constructor() {
 		this.entities = [];
 		this.entitiesToDespawn = [];
+	}
+
+	public loadMap(mapClass: new () => Map): void {
+		var mapInstance = new mapClass();
+		mapInstance.setup();
+		mapInstance.entities.forEach((entity: Entity) => {
+			this.addEntity(entity);
+		})
 	}
 
 	public tick(delta:number, now: number) {

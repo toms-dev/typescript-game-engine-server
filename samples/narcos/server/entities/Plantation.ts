@@ -1,4 +1,4 @@
-import Entity from "../../../lib/Entity";
+import Entity from "../../../../lib/Entity";
 
 export default class Plantation extends Entity {
 

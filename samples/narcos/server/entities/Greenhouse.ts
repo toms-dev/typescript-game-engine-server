@@ -1,6 +1,6 @@
 
 import Plantation from "./Plantation";
-import * as TSGameEngine from "../../../index";
+import * as TSGameEngine from "../../../../index";
 
 function EngineDeclareEntityClass(constructor: any):any {
 	console.log("Declaring class", constructor.name);

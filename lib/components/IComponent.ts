@@ -1,4 +1,5 @@
 
+import ComponentBag from "./ComponentBag";
 interface IComponent {
 
 	tick(delta: number, now: number): void;

@@ -29,7 +29,7 @@ export function ComponentDecorator(constructor: new (...args: any[]) => ICompone
 	DecorationContext.instance.componentsClasses.push(constructor);
 }
 
-export function MapDecorator(constructor: new (...args: any[]) => Map): void {
+export function MapDecorator(constructor: new () => Map): void {
 	var anyConstructor = <any> constructor;
 	console.log("Declaring map!", anyConstructor.name);
 	if (! Reflect.hasMetadata("properties", constructor)) {

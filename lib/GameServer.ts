@@ -46,6 +46,12 @@ export default class GameServer {
 		require(__dirname+"/../"+path);
 		this.context = DecorationContext.build();
 		console.log("Context loaded.");
+
+		this.loadStartMap();
+	}
+
+	private loadStartMap(): void {
+		this.world.loadMap(this.context.startMapClass);
 	}
 
 	/*addClient(client:Client):void {

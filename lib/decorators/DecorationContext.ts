@@ -10,13 +10,13 @@ export default class DecorationContext {
 	public entitiesClasses: (new (...args:any[]) => Entity)[];
 	public componentsClasses: (new (...args:any[]) => IComponent)[];
 	public mapsClasses: (new (...args:any[]) => Map)[];
-	public startMap: new (...args:any[]) => Map;
+	public startMapClass: new (...args:any[]) => Map;
 
 	constructor() {
 		this.entitiesClasses = [];
 		this.componentsClasses = [];
 		this.mapsClasses = [];
-		this.startMap = null;
+		this.startMapClass = null;
 	}
 
 	public static start(): void {
@@ -35,7 +35,7 @@ export default class DecorationContext {
 
 	public finalize(): void {
 		if (this.mapsClasses.length != 0) {
-			this.startMap = this.mapsClasses[0];
+			this.startMapClass = this.mapsClasses[0];
 		}
 	}
 

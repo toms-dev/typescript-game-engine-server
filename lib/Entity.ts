@@ -43,7 +43,7 @@ export default class Entity extends ComponentBag {
 	}
 
 	getTypeName(): string {
-		return this.type.value;
+		return this.type ? this.type.value : "Entity";
 	}
 
 	toString(): string {

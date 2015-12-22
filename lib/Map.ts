@@ -5,6 +5,10 @@ abstract class Map {
 
 	public entities: Entity[];
 
+	constructor() {
+		this.entities = [];
+	}
+
 	abstract setup(): void ;
 
 }

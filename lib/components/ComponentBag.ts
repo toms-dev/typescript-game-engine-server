@@ -1,5 +1,6 @@
 
 import IComponent from "./IComponent";
+import Component from "./Component";
 
 export default class ComponentBag {
 
@@ -10,6 +11,11 @@ export default class ComponentBag {
 	}
 
 	public addComponent(component: IComponent):void {
+		// TODO: clean existing code to remove this condition
+		if (component instanceof Component) {
+			// Link the parent of the component
+			component.parent = this;
+		}
 		this.components.push(component);
 	}
 
