@@ -21,7 +21,7 @@ export default class Movement implements IComponent {
 		this.maxSpeed = 1;
 
 		this.target = null;
-		this.targetDistanceThreshold = 1;
+		this.targetDistanceThreshold = 0.1;
 	}
 
 	tick(delta:number, now: number):void {
@@ -43,7 +43,8 @@ export default class Movement implements IComponent {
 		this.position.copyFrom(newPosition);
 
 		// Clean-up target when reached
-		if (this.isTargetReached()) {
+		if (this.hasTarget() && this.isTargetReached()) {
+			this.position.copyFrom(this.target);
 			this.clearTarget();
 			if (this.targetReachedCallback) {
 				this.targetReachedCallback(now);
@@ -83,8 +84,12 @@ export default class Movement implements IComponent {
 		this.target = target;
 	}
 
+	hasTarget(): boolean {
+		return this.target != null;
+	}
+
 	isTargetReached(): boolean {
-		if (this.target == null) {
+		if (! this.hasTarget()) {
 			return false;
 		}
 		var distToTarget = this.position.to(this.target).norm();
