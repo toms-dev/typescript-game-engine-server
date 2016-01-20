@@ -1,6 +1,11 @@
-/// <reference path="./typings/tsd.d.ts" />
+// <reference path="./typings/tsd.d.ts" />
 
 require('reflect-metadata');
+
+
+/*import DERP = require('typescript-game-engine');
+DERP.Lol;*/
+import {Entity} from 'typescript-game-engine';
 
 import {Entity} from "./index";
 import Greenhouse from "./samples/narcos/server/entities/Greenhouse";

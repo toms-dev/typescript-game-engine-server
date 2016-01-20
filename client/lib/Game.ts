@@ -1,4 +1,3 @@
-
 import World from "./World";
 import Renderer from "./rendering/Renderer";
 import Keyboard from "./input/Keyboard";
@@ -31,7 +30,9 @@ export default class Game extends ComponentBag {
 
 	private controlledEntity: Entity;
 
-	private commandSender: CommandSender;
+	// UI
+	//
+	public commandSender: CommandSender;
 	private uiElements: any[];
 
 	constructor() {

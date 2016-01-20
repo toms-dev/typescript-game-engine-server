@@ -45,7 +45,8 @@ export default class Command {
 	private successCallback: CommandSuccessCallback;
 	private failureCallback: CommandFailureCallback;
 
-	constructor(type:CommandType, args:any[] = [],
+	constructor(type:string, args:any[] = [],
+	//constructor(type:CommandType, args:any[] = [],
 				successCallback: CommandSuccessCallback = null,
 				failureCallback: CommandFailureCallback = null
 	) {

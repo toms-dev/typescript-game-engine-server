@@ -13,7 +13,7 @@ export default class CommandSender implements IComponent {
 		this.buffer = [];
 	}
 
-	add(c: Command): void {
+	public add(c: Command): void {
 		this.buffer.push(c);
 	}
 

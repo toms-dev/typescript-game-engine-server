@@ -2,10 +2,12 @@
 import {Game} from "../../../../client/index";
 import My2DRenderer from "./game/My2DRenderer";
 import MyTextRenderer from "./game/MyTextRenderer";
+import ColorButton from "./game/ColorButton";
 
 
 var game = new Game();
 game.start();
+var commandSender = game.commandSender;
 
 (<any> window).game = game;
 
@@ -19,6 +21,8 @@ var my2DRenderer = new My2DRenderer(game);
 var myTextRenderer = new MyTextRenderer(game);
 
 
-// Bind it to the game
+// Bind them to the game
 game.addComponent(my2DRenderer);
 game.addComponent(myTextRenderer);
+
+var button = new ColorButton(commandSender);
