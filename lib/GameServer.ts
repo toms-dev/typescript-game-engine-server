@@ -10,6 +10,9 @@ import Entity from "./Entity";
 import Level from "./components/common/Level";
 import DecorationContext from "./decorators/DecorationContext";
 
+import {Generic as GenericComponents} from "./components/_Components";
+import WebSocketServer from "./network/WebSocketServer";
+
 export default class GameServer {
 
 	private context: DecorationContext;
@@ -41,6 +44,8 @@ export default class GameServer {
 		this.publicTimers = [];
 	}
 
+	// TODO: There should be the possibility to load different maps or have
+	// different maps instantiated.
 	loadProject(path:string):void {
 		DecorationContext.start();
 		require(__dirname+"/../"+path);
@@ -52,6 +57,15 @@ export default class GameServer {
 
 	private loadStartMap(): void {
 		this.world.loadMap(this.context.startMapClass);
+	}
+
+	// TODO: replace with an abstract class that generates Clients ?
+	public startWebSocketServer() {
+		var wsServer = new WebSocketServer();
+		wsServer.start((connection) => {
+			var client = new Client(this, connection);
+			this.clients.push(client);
+		});
 	}
 
 	/*addClient(client:Client):void {
@@ -133,6 +147,13 @@ export default class GameServer {
 		this.updatePublicTimers(delta, now);
 
 		this.updateClients(now);
+
+		// DEBUG: print entities position
+		this.world.getEntities().forEach((ent: Entity) => {
+			var comp = ent.getComponentOrNull(GenericComponents.Movement);
+			if (!comp) return;
+			console.log("Entity " + ent.getGUID()+" @ ", comp.getPosition());
+		});
 
 
 		// Prepare next call

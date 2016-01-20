@@ -13,6 +13,7 @@
     "node_modules",
     "typings",
     "piratefight",
-    "samples/piratefight"
+    "samples/piratefight",
+    "samples/movingboxes/client"
   ]
 }
