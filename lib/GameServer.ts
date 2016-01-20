@@ -29,8 +29,8 @@ export default class GameServer {
 	 * Number of updates per second.
 	 * @type {number}
 	 */
-	public tickRate: number = 1;
-	//public tickRate: number = 25;
+	//public tickRate: number = 1;
+	public tickRate: number = 25;
 	private pingFrequency: number = 500;
 	private lastUpdate: number;
 

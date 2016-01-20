@@ -6,6 +6,7 @@ import {Components} from "../../../../index";
 import ColoredComponent from "../components/ColoredComponent";
 import ColorChanger from "../components/ColorChanger";
 import Vector3 from "../../../../lib/math/Vector3";
+import PathComponent from "../components/PathComponent";
 
 @Declare.Entity
 export default class MyBox extends Entity {
@@ -17,11 +18,14 @@ export default class MyBox extends Entity {
 		super(null, null);
 		var colorComponent = new ColoredComponent(boxColor);
 		this.addComponent(colorComponent);
-		this.addComponent(new Components.Generic.Movement());
+		var movement = new Components.Generic.Movement();
+		movement.setPosition(Vector3.create(Math.random()*3, Math.random()*3,0));
+		this.addComponent(movement);
+		this.addComponent(new PathComponent(movement));
 		//this.addComponent(new ColorChanger(colorComponent));
 
-		console.warn("Making box "+this+" move!");
-		this.getComponent(Components.Generic.Movement).moveTo(Vector3.create(1,1,1));
+		//console.warn("Making box "+this+" move!");
+		//this.getComponent(Components.Generic.Movement).moveTo(Vector3.create(1,1,1));
 	}
 
 	public setup() {

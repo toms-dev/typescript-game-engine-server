@@ -105,7 +105,7 @@ export default class Game extends ComponentBag {
 		requestAnimationFrame(() => {
 			setTimeout(() => {
 				this.mainLoop();
-			}, 1000);
+			}, 0);
 		});
 
 		var now = new Date().getTime();
