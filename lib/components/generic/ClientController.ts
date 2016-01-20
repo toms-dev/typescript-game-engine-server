@@ -39,11 +39,11 @@ export default class ClientController implements IComponent {
 	/** The buffer contains all the responses from the commands to be sent on next state flush */
 	private commandResponsesBuffer: CommandResponseJSON[];
 
-	constructor(client: Client, entity: Entity, userActionClass: new (entity: Entity) => IUserAction, world: World) {
-		//constructor(client:Client, entity:Entity, userActionClass: new () => IUserAction, world: World) {
+	constructor(client: Client, world: World) {
+	//constructor(client: Client, entity: Entity, userActionClass: new (entity: Entity) => IUserAction, world: World) {
 		this.client = client;
-		this.entity = entity;
-		this.UserActionClass = userActionClass;
+		/*this.entity = entity;
+		this.UserActionClass = userActionClass;*/
 		this.world = world;
 
 		this.downKeys = [];

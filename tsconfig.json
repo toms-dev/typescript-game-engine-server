@@ -10,6 +10,7 @@
     "emitDecoratorMetadata": true
   },
   "exclude": [
+    "client",
     "node_modules",
     "typings",
     "piratefight",

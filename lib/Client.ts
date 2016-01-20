@@ -87,7 +87,7 @@ export default class Client {
 
 		var handler = this.handlers[json.type];
 		if (! handler) {
-			throw new Error("No handler defined for action " + InternalMessageTypeValue[json.type]);
+			throw new Error("No handler defined for action " + json.type);
 		}
 
 		handler.call(this, payload, requestID);
@@ -99,7 +99,7 @@ export default class Client {
 
 	private sendMessage(type: MessageType, data: any, requestID?:number): void {
 		var message: any = {
-			type: type,
+			type: type.value,
 			data: data
 		};
 		if (requestID) {

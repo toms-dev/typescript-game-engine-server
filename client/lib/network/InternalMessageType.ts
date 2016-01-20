@@ -5,8 +5,7 @@ var InternalMessageType = {
 	INPUT_STATE: "internal_INPUT_STATE",
 	SERVER_STATE: "internal_SERVER_STATE",
 	PING_MEASURE: "internal_PING_MEASURE",
-	PING_VALUE: "internal_PING_VALUE",
-	CONTROLLED_ENTITY: "internal_CONTROLLED_ENTITY",
+	PING_VALUE: "internal_PING_VALUE"
 };
 
 export default InternalMessageType;

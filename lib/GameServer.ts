@@ -29,8 +29,8 @@ export default class GameServer {
 	 * Number of updates per second.
 	 * @type {number}
 	 */
-	//public tickRate: number = 1;
-	public tickRate: number = 25;
+	public tickRate: number = 1;
+	//public tickRate: number = 25;
 	private pingFrequency: number = 500;
 	private lastUpdate: number;
 
@@ -64,6 +64,7 @@ export default class GameServer {
 		var wsServer = new WebSocketServer();
 		wsServer.start((connection) => {
 			var client = new Client(this, connection);
+			client.setController(new ClientController(client, this.world));
 			this.clients.push(client);
 		});
 	}
@@ -75,6 +76,7 @@ export default class GameServer {
 	}*/
 
 	joinGame(client: Client, playerData: any): void {
+		throw "DEPRECATED";
 		// Add the client to list of active clients
 		this.clients.push(client);
 
@@ -177,6 +179,7 @@ export default class GameServer {
 
 		if (log) console.log("Next tick in "+nextTickDelay+ "\t(@ time: "+nextTickTime+")");
 		this.lastUpdate += tickDuration;
+		console.log("Next Tick delay: ", nextTickDelay);
 		setTimeout(() => {
 			this.mainLoop();
 		}, nextTickDelay);
