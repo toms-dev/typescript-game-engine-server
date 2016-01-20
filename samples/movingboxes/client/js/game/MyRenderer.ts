@@ -20,7 +20,7 @@ export default class MyRenderer implements IComponent {
 		var ctx = canvas.getContext('2d');
 		ctx.clearRect(0,0, canvas.width, canvas.height);
 
-		var scale = 10;
+		var scale = 30;
 
 		this.game.world.getEntities().forEach((ent: Entity) => {
 			console.warn("Warning: Renderer is using debugRawData in entity!");

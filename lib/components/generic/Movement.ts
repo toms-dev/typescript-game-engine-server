@@ -44,6 +44,7 @@ export default class Movement implements IComponent {
 
 		// Clean-up target when reached
 		if (this.hasTarget() && this.isTargetReached()) {
+			// TODO: there is an unnatural/unpleasant snapping effect when target is reached because of the target copy
 			this.position.copyFrom(this.target);
 			this.clearTarget();
 			if (this.targetReachedCallback) {
