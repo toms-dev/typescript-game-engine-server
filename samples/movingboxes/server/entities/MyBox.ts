@@ -1,12 +1,11 @@
 
+import {Declare, Entity, Components} from "../../../../index";
 
-import {Declare} from "../../../../index";
-import {Entity} from "../../../../index";
-import {Components} from "../../../../index";
 import ColoredComponent from "../components/ColoredComponent";
 import ColorChanger from "../components/ColorChanger";
-import Vector3 from "../../../../lib/math/Vector3";
 import PathComponent from "../components/PathComponent";
+
+import Vector3 from "../../../../lib/math/Vector3";	// TODO: fix include path
 
 @Declare.Entity
 export default class MyBox extends Entity {
