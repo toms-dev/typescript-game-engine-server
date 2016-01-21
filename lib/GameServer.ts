@@ -10,7 +10,7 @@ import Entity from "./Entity";
 import Level from "./components/common/Level";
 import DecorationContext from "./decorators/DecorationContext";
 
-import {Generic as GenericComponents} from "./components/_Components";
+import {Generic as GenericComponents} from "./components/index";
 import WebSocketServer from "./network/WebSocketServer";
 
 export default class GameServer {

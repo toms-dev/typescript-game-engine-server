@@ -1,13 +1,14 @@
 
 //import Entity from "./lib/Entity";
 
-class Lol {
-	public derp: string;
-}
-
-import * as Components from "./lib/components/_Components";
-import * as Declare from "./lib/decorators/_Decorators";
+import * as Components from "./lib/components/";
+import * as Declare from "./lib/decorators/";
+import * as Math from "./lib/math/";
 
 import Entity from "./lib/Entity";
+import Map from "./lib/Map";
 
-export {Entity, Components, Declare};
+export {
+	Components, Declare, Math,
+	Entity, Map
+};

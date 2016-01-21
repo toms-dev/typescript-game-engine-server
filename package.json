@@ -1,5 +1,5 @@
 {
-  "name": "typescript-game-engine",
+  "name": "typescript-game-engine-server",
   "version": "0.0.1",
   "dependencies": {
     "reflect-metadata": "^0.1.2",
