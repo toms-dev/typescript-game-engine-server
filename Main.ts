@@ -1,14 +1,14 @@
 
+// TODO: move this require somewhere else?
 require('reflect-metadata');
 
-//import {Entity} from 'typescript-game-engine';
-
-import {Entity} from "./index";
 import GameServer from "./lib/GameServer";
 
-var gameServer = new GameServer();
-gameServer.startWebSocketServer();
-gameServer.loadProject("../samples/movingboxes/server/maps/MainMap");
-//gameServer.loadProject("test/dummy-game/EmptyMap");
-gameServer.startLoop();
-
+export default function Main(path: string) {
+	var gameServer = new GameServer();
+	gameServer.startWebSocketServer();
+	gameServer.loadProject(path);
+	//gameServer.loadProject("../samples/movingboxes/server/maps/MainMap");
+	//gameServer.loadProject("test/dummy-game/EmptyMap");
+	gameServer.startLoop();
+}

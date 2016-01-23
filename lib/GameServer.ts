@@ -40,7 +40,7 @@ export default class GameServer {
 		this.clients = [];
 
 		this.world = new World();
-		// TODO: Generic: setup local vars (the boardsspawner was setup here)
+		// TODO: Generic: setup local vars (the boardspawner was setup here)
 		this.publicTimers = [];
 	}
 
@@ -48,7 +48,7 @@ export default class GameServer {
 	// different maps instantiated.
 	loadProject(path:string):void {
 		DecorationContext.start();
-		require(__dirname+"/../"+path);
+		var loaded = require(path);
 		this.context = DecorationContext.build();
 		console.log("Context loaded.");
 

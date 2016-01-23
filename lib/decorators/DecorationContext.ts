@@ -2,10 +2,11 @@
 import Entity from "../Entity";
 import IComponent from "../components/IComponent";
 import Map from "../Map";
+
 export default class DecorationContext {
 
 	private static isStarted: boolean = false;
-	static instance: DecorationContext;
+	static instance: DecorationContext = null;
 
 	public entitiesClasses: (new (...args:any[]) => Entity)[];
 	public componentsClasses: (new (...args:any[]) => IComponent)[];
@@ -27,6 +28,10 @@ export default class DecorationContext {
 		this.isStarted = true;
 	}
 
+	/**
+	 * Stores the results of the class loading and reset the context for another use.
+	 * @returns {DecorationContext}
+	 */
 	public static build(): DecorationContext {
 		DecorationContext.instance.finalize();
 		this.isStarted = false;
