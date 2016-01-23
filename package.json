@@ -6,5 +6,8 @@
     "tsd": "^0.6.5",
     "typescript-game-engine": "git+https://github.com/toms-dev/typescript-game-engine.git",
     "websocket": "^1.0.22"
+  },
+  "scripts": {
+    "postinstall": "tsd reinstall rebundle"
   }
 }

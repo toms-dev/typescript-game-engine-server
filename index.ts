@@ -8,6 +8,10 @@ import * as Math from "./lib/math/";
 import Entity from "./lib/Entity";
 import Map from "./lib/Map";
 
+// Hack to load typings when used in a lib ;) (as references are not allowed in index file)
+import Definitions from "./lib/_definitions";
+Definitions;
+
 export {
 	Components, Declare, Math,
 	Entity, Map
