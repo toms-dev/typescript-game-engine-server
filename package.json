@@ -9,6 +9,6 @@
     "websocket": "^1.0.22"
   },
   "scripts": {
-    "postinstall": "tsd reinstall rebundle link && tsc"
+    "postinstall": "tsd link && tsd reinstall rebundle && tsc"
   }
 }
