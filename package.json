@@ -4,6 +4,7 @@
   "dependencies": {
     "reflect-metadata": "^0.1.2",
     "tsd": "^0.6.5",
+    "typescript": "^1.7.5",
     "typescript-game-engine": "git+https://github.com/toms-dev/typescript-game-engine.git",
     "websocket": "^1.0.22"
   },
