@@ -1,4 +1,3 @@
-
 import IComponent from "./components/IComponent";
 import World from "./World";
 import EntityType from "./EntityType";
@@ -9,12 +8,15 @@ export {EntityType};
 export default class Entity extends ComponentBag {
 
 	private static guidAutoIncrement = 1;
-	private guid: number;
-	private type: EntityType;
-	private world: World;
+	private guid:number;
+	private type:EntityType;
+	private world:World;
 
-	constructor(world: World, type: EntityType) {
+	constructor(world:World, type:EntityType) {
 		super();
+		if (type == null) {
+			throw new Error("Entity type can't be null.");
+		}
 		this.guid = Entity.guidAutoIncrement++;
 		this.type = type;
 		this.world = world;
@@ -24,14 +26,14 @@ export default class Entity extends ComponentBag {
 		return this.guid;
 	}
 
-	despawn(): void {
+	despawn():void {
 		this.world.removeEntity(this);
 	}
 
-	getState(): any {
+	getState():any {
 		var state = super.getState();
 		state.guid = this.guid;
-		state.type = this.type;
+		state.type = this.type.getData();
 
 		loadPropertiesValues(this, state);
 
@@ -42,11 +44,11 @@ export default class Entity extends ComponentBag {
 		return this.type;
 	}
 
-	getTypeName(): string {
-		return this.type ? this.type.value : "Entity";
+	getTypeName():string {
+		return (<any> this.constructor).name;
 	}
 
-	toString(): string {
-		return this.getTypeName()+"#"+this.guid;
+	toString():string {
+		return this.getTypeName() + "#" + this.guid;
 	}
 }

@@ -1,4 +1,3 @@
-
 // TODO: move this require somewhere else?
 require('reflect-metadata');
 

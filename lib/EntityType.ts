@@ -1,5 +1,20 @@
 
-import ValueType from "./utils/ValueType";
+abstract class EntityType {
 
-export default class EntityType extends ValueType {
+	private metaType: string;
+
+	constructor(metaType: string) {
+		this.metaType = metaType;
+	}
+
+	protected abstract getInternalData(): any;
+
+	public getData(): any {
+		return {
+			metaType: this.metaType
+		}
+	}
+
 }
+
+export default EntityType;
