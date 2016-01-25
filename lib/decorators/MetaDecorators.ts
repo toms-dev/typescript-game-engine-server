@@ -1,5 +1,3 @@
-
-
 import Entity from "../Entity";
 import Map from "../Map";
 import * as Property from "./metamodel/Property";

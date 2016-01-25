@@ -5,7 +5,7 @@ export default class NamedEntityType extends EntityType {
 	public name:string;
 
 	constructor(name:string) {
-		super("named");
+		super("namedType");
 		this.name = name;
 	}
 

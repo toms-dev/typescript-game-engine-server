@@ -11,7 +11,8 @@ abstract class EntityType {
 
 	public getData(): any {
 		return {
-			metaType: this.metaType
+			metaType: this.metaType,
+			typeData: this.getInternalData()
 		}
 	}
 
