@@ -70,4 +70,14 @@ export default class ComponentBag {
 		return this.getComponentOrNull(constructor) != null;
 	}
 
+	receiveEvent(eventName: string, eventData: any): void {
+		console.log("\tComponentBag propagating '"+eventName+"' to "+this.components.length+ " components ("
+			+this.components.map((c: any) => { return c.constructor.name; }).join(',') +")");
+		this.components.forEach((c: IComponent) => {
+			var anyComp = <any> c;
+			if (anyComp.constructor.prototype.receiveEvent) {
+				anyComp.receiveEvent(eventName, eventData);
+			}
+		});
+	}
 }

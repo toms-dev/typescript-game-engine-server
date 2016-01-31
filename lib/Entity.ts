@@ -51,4 +51,9 @@ export default class Entity extends ComponentBag {
 	toString():string {
 		return this.getTypeName() + "#" + this.guid;
 	}
+
+	receiveEvent(eventName: string, args: any[]): void {
+		console.warn("TODO: Replace the event propagation plz?");
+		super.receiveEvent(eventName, args);
+	}
 }

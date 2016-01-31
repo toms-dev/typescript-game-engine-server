@@ -93,4 +93,12 @@ export default class World {
 
 		return Vector3.create(x,y,z);
 	}
+
+	// TODO: use the component event library used by the ts-game-engine-client framework or is this enough?
+	sendEventToEntities(eventName: string, args: any[]): void {
+		console.log("Propagating event to "+this.entities.length+" entities");
+		this.entities.forEach((e: Entity) => {
+			e.receiveEvent(eventName, args);
+		})
+	}
 }

@@ -108,10 +108,23 @@ export default class ClientController implements IComponent {
 		*/
 
 		// Commands from UI
-		/*if (inputState.commands) {
-			var commands: CommandRequest[] = inputState.commands;
+		if (inputState.commands) {
+			var commands: CommandRequestJSON[] = inputState.commands;
+			if (commands.length > 0) {
+				console.log("DEBUG: commands: ", commands);
+				console.log("Got commands from client: ["+commands.map((c: CommandRequestJSON) => {
+						return c.name
+					}).join(',')+"]"
+				);
+			}
+			commands.forEach((command: CommandRequestJSON) => {
+				// TODO: should there be a mapping from command names to internal events? => That would be safer,
+				// ensuring only valid/legit events are generated.
+				this.world.sendEventToEntities(command.name, command.data);
+				// TODO: process callback
+			});
 			// Only process when there are some command to process! #captain
-			if (commands.length != 0) {
+			/*if (commands.length != 0) {
 				console.log("Received Commands:", commands);
 
 				// Filter only valid commands from a white-list
@@ -135,8 +148,8 @@ export default class ClientController implements IComponent {
 					this.commandsBuffer.push(command);
 					//this.commandsBuffer[commandName] = commandParams;
 				}
-			}
-		}*/
+			}*/
+		}
 	}
 
 	tick(delta: number): void {
@@ -214,8 +227,9 @@ export default class ClientController implements IComponent {
 
 		for (var i = 0; i < this.commandsBuffer.length; i++) {
 			var command = this.commandsBuffer[i];
-			var commandResponse = userAction.doCommand(command.commandID, command.name, command.params);
-			this.commandResponsesBuffer.push(commandResponse);
+			console.warn("WARNING: disabled command processing with callback.");
+			/*var commandResponse = userAction.doCommand(command.commandID, command.name, command.params);
+			this.commandResponsesBuffer.push(commandResponse);*/
 		}
 		/*
 		var commandName: string;

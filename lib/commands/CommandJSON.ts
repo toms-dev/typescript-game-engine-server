@@ -6,7 +6,7 @@ import CommandType from "./CommandType";
 export interface CommandRequestJSON {
 	commandID: number;
 	name: string;
-	params: any[];
+	data: any;
 }
 
 /**
