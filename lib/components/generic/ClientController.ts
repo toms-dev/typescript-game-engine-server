@@ -58,8 +58,8 @@ export default class ClientController implements IComponent {
 
 	public loadState(inputState: any): void {
 		console.log("DEBUG: Got input state: ", inputState);
-		console.log("DEBUG: Skipping!");
-		return;
+		console.log("DEBUG: Skipping keyboard and mouse for debugging purposes!");
+
 		/*
 		// Keyboard
 		var rawKeys = inputState.keys.downKeys;
@@ -105,6 +105,7 @@ export default class ClientController implements IComponent {
 				}
 			}
 		}
+		*/
 
 		// Commands from UI
 		if (inputState.commands) {
@@ -120,7 +121,7 @@ export default class ClientController implements IComponent {
 						return CommandType[c]
 					});
 
-				// Add valid commands to the buffer
+				// Add valid commands to the buffer, so they get processed on next tick
 				for (var i = 0; i < commands.length; ++i) {
 					var command: CommandRequest = commands[i];
 
@@ -135,7 +136,7 @@ export default class ClientController implements IComponent {
 					//this.commandsBuffer[commandName] = commandParams;
 				}
 			}
-		}*/
+		}
 	}
 
 	tick(delta: number): void {

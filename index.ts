@@ -1,8 +1,8 @@
 //import Entity from "./lib/Entity";
 
-import * as Components from "./lib/components/";
-import * as Declare from "./lib/decorators/";
-import * as Math from "./lib/math/";
+import * as Components from "./lib/components/index";
+import * as Declare from "./lib/decorators/index";
+import * as Math from "./lib/math/index";
 
 import Entity from "./lib/Entity";
 import NamedEntityType from "./lib/NamedEntityType";

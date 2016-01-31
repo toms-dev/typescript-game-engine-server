@@ -150,12 +150,12 @@ export default class GameServer {
 
 		this.updateClients(now);
 
-		// DEBUG: print entities position
+		/*// DEBUG: print entities position
 		this.world.getEntities().forEach((ent: Entity) => {
 			var comp = ent.getComponentOrNull(GenericComponents.Movement);
 			if (!comp) return;
 			console.log("Entity " + ent.getGUID()+" @ ", comp.getPosition());
-		});
+		});*/
 
 
 		// Prepare next call
