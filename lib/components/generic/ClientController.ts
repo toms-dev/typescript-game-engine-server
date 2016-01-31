@@ -108,7 +108,7 @@ export default class ClientController implements IComponent {
 		*/
 
 		// Commands from UI
-		if (inputState.commands) {
+		/*if (inputState.commands) {
 			var commands: CommandRequest[] = inputState.commands;
 			// Only process when there are some command to process! #captain
 			if (commands.length != 0) {
@@ -136,7 +136,7 @@ export default class ClientController implements IComponent {
 					//this.commandsBuffer[commandName] = commandParams;
 				}
 			}
-		}
+		}*/
 	}
 
 	tick(delta: number): void {
