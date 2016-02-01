@@ -120,7 +120,7 @@ export default class ClientController implements IComponent {
 			commands.forEach((command: CommandRequestJSON) => {
 				// TODO: should there be a mapping from command names to internal events? => That would be safer,
 				// ensuring only valid/legit events are generated.
-				this.client.rootController.receiveCommand(command);
+				this.client.rootController.doReceiveCommand(command);
 				//this.world.sendEventToEntities(command.name, command.data);
 				// TODO: process callback
 			});

@@ -70,8 +70,9 @@ export default class Client {
 		// TODO: the root controller should be the ClientController class, and the clientConnect should be a child
 		// of this class.
 		var rootControllerClass = this.gameServer.clientConnectControllerClass;
-		this.rootController = new rootControllerClass(this.gameServer.rootWorld, null);
-		this.rootController.activate(gameServer.now);
+		this.rootController = new rootControllerClass();
+		this.rootController.setContext(this.gameServer.rootWorld, null);
+		this.rootController.doActivate(gameServer.now);
 
 		this.setupConnection();
 	}
@@ -200,7 +201,7 @@ export default class Client {
 
 	private onDisconnect(): void {
 		// TODO: not nice to use Date.now() here.
-		this.rootController.deactivate(Date.now());
+		this.rootController.doDeactivate(Date.now());
 	}
 
 	private processJoinGame(data: any, requestID: number): void {

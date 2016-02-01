@@ -4,7 +4,9 @@ import ObjectUtils from "../utils/Object";
 
 interface IController {
 	getWorldState(): any ;
-	receiveCommand(command: CommandRequestJSON): void;
+	doReceiveCommand(command: CommandRequestJSON): void;
+	removeChildController(controller: IController): void;
+	doDeactivate(now: number): void;
 }
 
 class BaseController implements IController {
@@ -12,13 +14,33 @@ class BaseController implements IController {
 	protected world: World;
 	private children: IController[];
 
-	constructor(world: World) {
-		this.world = world;
+	constructor() {
+		this.world = null;
 		this.children = [];
 	}
 
-	public addChildController(controller: IController): void {
+	setWorld(world: World) {
+		this.world = world;
+	}
+
+	/**
+	 * Initializes a child component from its class.
+	 * @param controller
+	 */
+	public addChildController(controller: Controller): void {
+	//public addChildController(controllerClass: new (world: World, parent: IController) => Controller): void {
+		//var controller = new controllerClass(this.world, this);
+		controller.setContext(this.world, this);
 		this.children.push(controller);
+		controller.doActivate(this.world.now);
+	}
+
+	public removeChildController(controller: IController): void {
+		var index = this.children.indexOf(controller);
+		if (index == -1) {
+			throw new Error("Child controller not found: "+controller.toString());
+		}
+		this.children.splice(index, 1);
 	}
 
 	getWorldState(): any {
@@ -31,10 +53,16 @@ class BaseController implements IController {
 		});
 	}
 
-	receiveCommand(command: CommandRequestJSON): void {
+	doReceiveCommand(command: CommandRequestJSON): void {
 		// Propagate command to children
 		this.children.forEach((child: IController) => {
-			child.receiveCommand(command);
+			child.doReceiveCommand(command);
+		});
+	}
+
+	doDeactivate(now: number): void {
+		this.children.forEach((child: IController) => {
+			child.doDeactivate(now);
 		});
 	}
 
@@ -49,8 +77,12 @@ abstract class Controller extends BaseController implements IController {
 
 	private parent: IController;
 
-	constructor(world: World, parent: IController) {
-		super(world);
+	constructor() {
+		super();
+	}
+
+	setContext(world: World, parent: IController) {
+		this.setWorld(world);
 		if (parent == null) {
 			console.error("Null parent for controller '" + (<any> this.constructor).name + "'. "
 				+"An error will be throw after dev is finished!");
@@ -59,15 +91,39 @@ abstract class Controller extends BaseController implements IController {
 		this.parent = parent;
 	}
 
-	abstract activate(now: number): void;
-	abstract deactivate(now: number): void;
+	doActivate(now: number): void {
+		this.activate(now);
+	}
+
+	doDeactivate(now: number): void {
+		this.deactivate(now);
+		super.doDeactivate(now);
+
+		console.warn("TODO: we have to check that parent is not null because we are using a custom Controller as the" +
+			" RootController... Please fix this sometime.");
+
+		if (this.parent) {
+			this.parent.removeChildController(this);
+		}
+	}
+
+	doReceiveCommand(command: CommandRequestJSON): void {
+		// Local processing
+		this.receiveCommand(command);
+
+		// Propagate to children
+		super.doReceiveCommand(command);
+	}
+
+	protected abstract activate(now: number): void;
+	protected abstract deactivate(now: number): void;
 
 	/**
 	 * Builds the state from the associated world.
 	 */
 	abstract getWorldState(): any ;
 
-	abstract receiveCommand(command: CommandRequestJSON): void;
+	protected abstract receiveCommand(command: CommandRequestJSON): void;
 
 }
 

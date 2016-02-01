@@ -22,7 +22,7 @@ export default class GameServer {
 	 * List of clients that will receive game states.
 	 */
 	private clients: Client[];
-	public clientConnectControllerClass: new (world: World, parent: Controller) => Controller;
+	public clientConnectControllerClass: new () => Controller;
 
 	private world: World;
 	public rootWorld: World;

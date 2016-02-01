@@ -10,6 +10,8 @@ export default class World {
 
 	public children: World[];
 
+	public now: number;
+
 	constructor() {
 		this.entities = [];
 		this.entitiesToDespawn = [];
@@ -26,6 +28,7 @@ export default class World {
 	}
 
 	public tick(delta:number, now: number) {
+		this.now = now;
 		for (var i = 0; i < this.entities.length; ++i) {
 			var e = this.entities[i];
 			e.tick(delta, now);
