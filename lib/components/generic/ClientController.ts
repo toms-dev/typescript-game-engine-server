@@ -121,7 +121,7 @@ export default class ClientController implements IComponent {
 				// TODO: should there be a mapping from command names to internal events? => That would be safer,
 				// ensuring only valid/legit events are generated.
 				this.client.rootController.receiveCommand(command);
-				this.world.sendEventToEntities(command.name, command.data);
+				//this.world.sendEventToEntities(command.name, command.data);
 				// TODO: process callback
 			});
 			// Only process when there are some command to process! #captain
