@@ -12,6 +12,8 @@ import DecorationContext from "./decorators/DecorationContext";
 
 import {Generic as GenericComponents} from "./components/index";
 import WebSocketServer from "./network/WebSocketServer";
+import BaseController from "./controllers/Controller";
+import Controller from "./controllers/Controller";
 
 export default class GameServer {
 
@@ -20,8 +22,10 @@ export default class GameServer {
 	 * List of clients that will receive game states.
 	 */
 	private clients: Client[];
+	public clientConnectControllerClass: new (world: World, parent: Controller) => Controller;
 
 	private world: World;
+	public rootWorld: World;
 
 	public publicTimers: Timer[];
 
@@ -34,12 +38,18 @@ export default class GameServer {
 	private pingFrequency: number = 500;
 	private lastUpdate: number;
 
+	/**
+	 * The time of the last update.
+	 */
+	public now: number;
+
 	private firstTick: boolean;
 
 	constructor() {
 		this.clients = [];
 
 		this.world = new World();
+		this.rootWorld = this.world;
 		// TODO: Generic: setup local vars (the boardspawner was setup here)
 		this.publicTimers = [];
 	}
@@ -138,6 +148,7 @@ export default class GameServer {
 		if (log) console.log("======");
 		var tickDuration = 1000 / this.tickRate;
 		var now = this.lastUpdate + tickDuration;
+		this.now = now;
 
 		var delta = now - this.lastUpdate;
 		if (log) console.log("Delta: ", delta, " Time:\t"+now,"  lastUpdt:\t"+this.lastUpdate);
@@ -179,7 +190,6 @@ export default class GameServer {
 
 		if (log) console.log("Next tick in "+nextTickDelay+ "\t(@ time: "+nextTickTime+")");
 		this.lastUpdate += tickDuration;
-		console.log("Next Tick delay: ", nextTickDelay);
 		setTimeout(() => {
 			this.mainLoop();
 		}, nextTickDelay);
@@ -198,13 +208,15 @@ export default class GameServer {
 	private updateClients(now: number): void {
 		var serverState = {
 			serverTime: now,
-			world: this.world.flushState()
+			world: this.world.getState()
 		};
 
 		for (var i = 0; i < this.clients.length; ++i) {
 			var c = this.clients[i];
 			c.sendServerState(serverState);
+			//c.updateRemoteState();
 		}
+		this.world.cleanUpPostTick();
 	}
 
 	private updateSingleClient(c: Client): void {
@@ -212,6 +224,7 @@ export default class GameServer {
 			serverTime: <number> null,
 			world: this.world.getState()
 		};
+		//c.updateRemoteState();
 		c.sendServerState(state);
 	}
 

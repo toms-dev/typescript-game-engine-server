@@ -3,7 +3,7 @@ require('reflect-metadata');
 
 import GameServer from "./lib/GameServer";
 
-export default function Main(path: string, tickRate = 25) {
+export default function Main(path: string, tickRate = 25): GameServer {
 	var gameServer = new GameServer();
 	gameServer.startWebSocketServer();
 	gameServer.loadProject(path);
@@ -11,4 +11,5 @@ export default function Main(path: string, tickRate = 25) {
 	//gameServer.loadProject("../samples/movingboxes/server/maps/MainMap");
 	//gameServer.loadProject("test/dummy-game/EmptyMap");
 	gameServer.startLoop();
+	return gameServer;
 }

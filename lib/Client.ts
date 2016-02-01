@@ -7,6 +7,7 @@ import InternalMessageTypeValue from "./network/InternalMessageTypeValue";
 import MessageType from "./network/MessageType";
 import Entity from "./Entity";
 import ClientController from "./components/generic/ClientController";
+import Controller from "./controllers/Controller";
 
 interface ServerState {
 	serverTime: number,
@@ -16,6 +17,9 @@ interface ServerState {
 	}
 }
 
+/**
+ * Handles all the networking aspect of the client communication.
+ */
 export default class Client {
 
 	private static idAutoIncrement = 1;
@@ -27,7 +31,12 @@ export default class Client {
 
 	private handlers: {[messageType: string]: (data: any, requestID?: number) => void};
 
-	private controller: ClientController;
+	private commandController: ClientController;
+
+	// TODO: should this be private? (currently used by ClientController but when ClientController will extend
+	// controller, it won't have to be public anymore)
+	public rootController: Controller;
+
 	private controlledEntity: Entity;
 	private pingSentTime: Date;
 	private ping: number;
@@ -50,16 +59,24 @@ export default class Client {
 		this.handlers[InternalMessageTypeValue.INPUT_STATE] = this.processInputState;
 		this.handlers[InternalMessageTypeValue.PING_MEASURE] = this.processPingMeasure;
 
+		// Networking
 		this.ping = 0;
 		this.pingSentTime = null;
 
 		this.maximumFakeLag = 0; // 150
 		this.currentLagTime = new Date().getTime();
 
-		this.setup();
+		// Client Controller
+		// TODO: the root controller should be the ClientController class, and the clientConnect should be a child
+		// of this class.
+		var rootControllerClass = this.gameServer.clientConnectControllerClass;
+		this.rootController = new rootControllerClass(this.gameServer.rootWorld, null);
+		this.rootController.activate(gameServer.now);
+
+		this.setupConnection();
 	}
 
-	setup() {
+	setupConnection() {
 		this.connection.on('message', (message: websocket.IMessage) => {
 			if (message.type === 'utf8') {
 				this.onMessage(message.utf8Data);
@@ -71,6 +88,7 @@ export default class Client {
 		});
 		this.connection.on('close', (reasonCode, description) => {
 			console.log((new Date()) + ' Peer ' + this.connection.remoteAddress + ' disconnected.');
+			this.onDisconnect();
 			this.gameServer.onClientDisconnect(this);
 		});
 	}
@@ -123,12 +141,21 @@ export default class Client {
 		}
 	}
 
+	public updateRemoteState(): void {
+		var state: any = {
+			serverTime: 1337,
+			world: this.rootController.getWorldState()
+		};
+
+		this.sendServerState(state);
+	}
+
 	public sendServerState(serverState: ServerState):void {
 		// Note: it is necessary to "copy" serverState structure to preserve the original object.
 		var state = {
 			serverTime: serverState.serverTime,
 			world: serverState.world,
-			commandResponses: this.controller.flushCommandResponses()
+			commandResponses: this.commandController.flushCommandResponses()
 		};
 		this.sendMessage(new InternalMessageType(InternalMessageTypeValue.SERVER_STATE), state);
 	}
@@ -139,7 +166,7 @@ export default class Client {
 	}
 
 	setController(controller:ClientController):void {
-		this.controller = controller;
+		this.commandController = controller;
 	}
 
 	/**
@@ -171,6 +198,11 @@ export default class Client {
 		this.sendMessage(new InternalMessageType(InternalMessageTypeValue.CONTROLLED_ENTITY), {entityID: this.controlledEntity.getGUID()});
 	}
 
+	private onDisconnect(): void {
+		// TODO: not nice to use Date.now() here.
+		this.rootController.deactivate(Date.now());
+	}
+
 	private processJoinGame(data: any, requestID: number): void {
 		if (! data.playerName) {
 			console.error("Got:", data);
@@ -183,8 +215,8 @@ export default class Client {
 	}
 
 	private processInputState(data: any): void {
-		if (this.controller) {
-			this.controller.loadState(data);
+		if (this.commandController) {
+			this.commandController.loadState(data);
 		}
 	}
 

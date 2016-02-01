@@ -8,9 +8,13 @@ export default class World {
 	private entities:Entity[];
 	private entitiesToDespawn: Entity[];
 
+	public children: World[];
+
 	constructor() {
 		this.entities = [];
 		this.entitiesToDespawn = [];
+
+		this.children = [];
 	}
 
 	public loadMap(mapClass: new () => Map): void {
@@ -18,7 +22,7 @@ export default class World {
 		mapInstance.setup();
 		mapInstance.entities.forEach((entity: Entity) => {
 			this.addEntity(entity);
-		})
+		});
 	}
 
 	public tick(delta:number, now: number) {
@@ -50,6 +54,7 @@ export default class World {
 	}
 
 	flushState(): any {
+		console.warn("Deprecated flushState function.");
 		var state = this.getState();
 		this.cleanUpPostTick();
 		return state;

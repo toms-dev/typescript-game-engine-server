@@ -57,8 +57,8 @@ export default class ClientController implements IComponent {
 	}
 
 	public loadState(inputState: any): void {
-		console.log("DEBUG: Got input state: ", inputState);
-		console.log("DEBUG: Skipping keyboard and mouse for debugging purposes!");
+		/*console.log("DEBUG: Got input state: ", inputState);
+		console.log("DEBUG: Skipping keyboard and mouse for debugging purposes!");*/
 
 		/*
 		// Keyboard
@@ -120,6 +120,7 @@ export default class ClientController implements IComponent {
 			commands.forEach((command: CommandRequestJSON) => {
 				// TODO: should there be a mapping from command names to internal events? => That would be safer,
 				// ensuring only valid/legit events are generated.
+				this.client.rootController.receiveCommand(command);
 				this.world.sendEventToEntities(command.name, command.data);
 				// TODO: process callback
 			});

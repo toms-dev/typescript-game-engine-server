@@ -24,6 +24,7 @@ export default class DecorationContext {
 		if (this.isStarted) {	// make the loader fool-proof
 			throw new Error("DecorationContext already started.");
 		}
+		console.log("DecorationContext listener is active!");
 		this.instance = new DecorationContext();
 		this.isStarted = true;
 	}
