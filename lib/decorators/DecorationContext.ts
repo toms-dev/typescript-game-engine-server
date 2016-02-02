@@ -45,4 +45,17 @@ export default class DecorationContext {
 		}
 	}
 
+	public resolveEntity(className: string): new (...args: any[]) => Entity {
+		var matching = this.entitiesClasses.filter((entityClass: any) => {
+			return entityClass.name == className;
+		});
+		if (matching.length == 0) {
+			return null
+		}
+		if (matching.length == 1) {
+			return matching[0];
+		}
+		throw new Error("Found "+matching.length+" matching classes for name: '"+className+"'");
+	}
+
 }

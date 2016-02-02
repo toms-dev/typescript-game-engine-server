@@ -1,6 +1,6 @@
 
 import IComponent from "./IComponent";
-import loadPropertiesValues from "../utils/PropertyLoader";
+import {loadPropertiesValues} from "../utils/PropertyLoader";
 import ComponentBag from "./ComponentBag";
 
 abstract class Component implements IComponent {

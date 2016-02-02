@@ -7,10 +7,14 @@ import * as Math from "./lib/math/index";
 import Entity from "./lib/Entity";
 import NamedEntityType from "./lib/NamedEntityType";
 
+import World from "./lib/World";
 import Map from "./lib/Map";
 
 import Controller from "./lib/controllers/Controller";
 import {CommandRequestJSON} from "./lib/commands/Command";
+import IGameConfiguration from "./lib/IGameConfiguration";
+
+import DecorationContext from "./lib/decorators/DecorationContext";
 
 import Main from "./Main";
 
@@ -21,7 +25,11 @@ Definitions;
 export {
 	Components, Declare, Math,
 	Entity, NamedEntityType,
-	Map,
+	World, Map,
 	Controller, CommandRequestJSON,
-	Main
+	Main, IGameConfiguration,
+
+	// Shared parts
+	DecorationContext
+
 };

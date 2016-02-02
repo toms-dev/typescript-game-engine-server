@@ -14,15 +14,19 @@ import {Generic as GenericComponents} from "./components/index";
 import WebSocketServer from "./network/WebSocketServer";
 import BaseController from "./controllers/Controller";
 import Controller from "./controllers/Controller";
+import IGameConfiguration from "./IGameConfiguration";
 
 export default class GameServer {
 
 	private context: DecorationContext;
+	private configuration: IGameConfiguration<Entity>;
 	/**
 	 * List of clients that will receive game states.
 	 */
 	private clients: Client[];
-	public clientConnectControllerClass: new () => Controller;
+	//public clientConnectControllerClass: new (rootEntity: Entity) => Controller;
+
+	public rootEntity: Entity;
 
 	private world: World;
 	public rootWorld: World;
@@ -50,6 +54,7 @@ export default class GameServer {
 
 		this.world = new World();
 		this.rootWorld = this.world;
+		this.rootEntity = null;
 		// TODO: Generic: setup local vars (the boardspawner was setup here)
 		this.publicTimers = [];
 	}
@@ -58,14 +63,17 @@ export default class GameServer {
 	// different maps instantiated.
 	loadProject(path:string):void {
 		DecorationContext.start();
-		var loaded = require(path);
+		var configurationClass = require(path).default;
+		this.configuration = new configurationClass();
 		this.context = DecorationContext.build();
 		console.log("Context loaded.");
 
-		this.loadStartMap();
+		this.rootEntity = this.configuration.createRootEntity();
+		//this.loadStartMap();
 	}
 
 	private loadStartMap(): void {
+		throw "Deprecated";
 		this.world.loadMap(this.context.startMapClass);
 	}
 
@@ -75,6 +83,13 @@ export default class GameServer {
 		wsServer.start((connection) => {
 			var client = new Client(this, connection);
 			client.setController(new ClientController(client, this.world));
+
+			// Wiring-up the root controller of the client
+			// TODO: wire-up to the ClientController instead of the user-defined controller.
+			// TODO: put all this in client.setRootController method?
+			client.rootController = this.configuration.createRootController(this.rootEntity);
+			client.rootController.setContext(this.rootWorld, null);
+			client.rootController.doActivate(this.now);
 			this.clients.push(client);
 		});
 	}
@@ -206,9 +221,12 @@ export default class GameServer {
 	}
 
 	private updateClients(now: number): void {
+		if (this.clients.length == 0) return;
+
 		var serverState = {
 			serverTime: now,
-			world: this.world.getState()
+			//world: this.world.getState()
+			world: this.rootEntity.getState()
 		};
 
 		for (var i = 0; i < this.clients.length; ++i) {
@@ -222,7 +240,8 @@ export default class GameServer {
 	private updateSingleClient(c: Client): void {
 		var state = {
 			serverTime: <number> null,
-			world: this.world.getState()
+			//world: this.world.getState()
+			world: this.rootEntity.getState()
 		};
 		//c.updateRemoteState();
 		c.sendServerState(state);

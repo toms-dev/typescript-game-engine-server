@@ -66,13 +66,10 @@ export default class Client {
 		this.maximumFakeLag = 0; // 150
 		this.currentLagTime = new Date().getTime();
 
-		// Client Controller
+		// Client Controller: set by GameServer
+		this.rootController = null;
 		// TODO: the root controller should be the ClientController class, and the clientConnect should be a child
 		// of this class.
-		var rootControllerClass = this.gameServer.clientConnectControllerClass;
-		this.rootController = new rootControllerClass();
-		this.rootController.setContext(this.gameServer.rootWorld, null);
-		this.rootController.doActivate(gameServer.now);
 
 		this.setupConnection();
 	}

@@ -21,10 +21,7 @@ export default class World {
 
 	public loadMap(mapClass: new () => Map): void {
 		var mapInstance = new mapClass();
-		mapInstance.setup();
-		mapInstance.entities.forEach((entity: Entity) => {
-			this.addEntity(entity);
-		});
+		mapInstance.setup(this);
 	}
 
 	public tick(delta:number, now: number) {
