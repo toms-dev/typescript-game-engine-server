@@ -41,7 +41,14 @@ class EntityProperty {
 	}
 
 	getValue(entity: Entity): any {
-		return this.toState(this.getRawValue(entity));
+		var raw = this.getRawValue(entity);
+		// Safety check
+		if (!this.isEntity && raw instanceof Entity) {
+			throw new Error("An Entity was declared as a standard property!" +
+				"You fool! The property is '"+this.name+"' in "+(<any> this.entityConstructor).name)
+		}
+
+		return this.toState(raw);
 	}
 
 	isSubEntity(): boolean {
@@ -52,6 +59,7 @@ class EntityProperty {
 class SharedProperty extends EntityProperty {
 	constructor(entityConstructor:any, name:string) {
 		super(entityConstructor, name, true, true);
+		this.isEntity = false; // just to be sure ;)
 	}
 }
 

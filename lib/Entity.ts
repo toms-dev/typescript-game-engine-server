@@ -106,41 +106,77 @@ export default class Entity extends ComponentBag {
 		this._guid = state.guid;
 		this.type = null; // TODO: type.fromState()
 
-		var log = false;
+		var log = true;
 		if (log) console.log("Input state: ", state);
 
 		// Load properties
 		// Sub entities
 		var subEntities: any = state.entities;
-		for (var entityKey in subEntities) {
-			if (! subEntities.hasOwnProperty(entityKey)) continue;
+		for (var sourceEntityKey in subEntities) {
+			if (! subEntities.hasOwnProperty(sourceEntityKey)) continue;
 
-			var subEntityData = subEntities[entityKey];
-			var existingSubEntity: Entity | Entity[] = (<any> this)[entityKey];
+			// Target entity key might be modified if a setter is not found.
+			var targetEntityKey = sourceEntityKey;
+
+			// Safety check to prevent missing setter...
+			if (this.constructor.prototype.__lookupGetter__(sourceEntityKey)) {
+				if (! this.constructor.prototype.__lookupSetter__(sourceEntityKey)) {
+					console.warn("Missing setter for " + (<any> this.constructor).name + "." + sourceEntityKey+"");
+					// Add an underscore to find hidden property
+					targetEntityKey = "_"+targetEntityKey;
+					if ((<any>this)[targetEntityKey] == undefined) {
+						throw new Error("Missing setter for " + (<any> this.constructor).name + "." + sourceEntityKey+". (also searched with underscore prefix)" );
+					}
+				}
+			}
+
+			var subEntityData = subEntities[sourceEntityKey];
+			var existingSubEntity: Entity | Entity[] = (<any> this)[sourceEntityKey];
 
 			// Fully deserialize if no entity already exists or if the collection is empty
 			if (! existingSubEntity || (<any[]> existingSubEntity).length == 0) {
 				var subEntity = Entity.deserialize(subEntityData, resolver);
-				if (log) console.log("Parsed "+entityKey+": ", subEntity);
-
-				// Safety check if getters/setters are used.
-				if (this.constructor.prototype.__lookupGetter__(entityKey)) {
-					if (! this.constructor.prototype.__lookupSetter__(entityKey)) {
-						entityKey = "_"+entityKey;
-						if ((<any>this)[entityKey] == undefined) {
-							throw new Error("Missing setter for " + (<any> this.constructor).name + "." + entityKey+". (also searched with underscore prefix)" );
-						}
-					}
-				}
+				if (log) console.log("Parsed "+sourceEntityKey+": ", subEntity);
 			}
+			// Otherwise, only update the entity
 			else {
-				if (log) console.log("Using existing entity instance for "+entityKey+":", existingSubEntity);
+				if (log) console.log("Using existing entity instance for "+sourceEntityKey+":", existingSubEntity);
 				// Handle collections
 				if (Array.isArray(existingSubEntity)) {
 					// Update all the entities in the collection
-					(<Entity[]> existingSubEntity).forEach((e: Entity) => {
-						e.fromState(subEntityData, resolver);
-					})
+					var subEntitiesData: any[] = subEntityData;
+					var newSubEntities: Entity[] = [];
+					console.debug("SubEntitiesData.length:", subEntitiesData.length);
+					console.debug("SubEntitiesData=", subEntitiesData);
+					subEntitiesData.forEach((singleEntityData: any) => {
+						// If we only have the GUID of the Entity, just preserve the entity.
+						var entity: Entity;
+						if (typeof singleEntityData == "number") {
+							// In this case, do not load anything, but be sure that the new list of entities is updated!
+							var guid = singleEntityData;
+							entity = Entity.instances[guid];
+						}
+						// Otherwise, update the entity
+						else {
+							var guid = singleEntityData.guid;
+							entity = Entity.instances[guid];
+							if (entity) {
+								entity.fromState(singleEntityData, resolver);
+							}
+							else {
+								// Here, we are sure to only get a single Entity from the deserialize method.
+								entity = <Entity> Entity.deserialize(singleEntityData, resolver);
+							}
+						}
+						newSubEntities.push(entity);
+					});
+					// Propagate the result to store it
+					existingSubEntity = newSubEntities;
+					console.debug("New size of entities '"+sourceEntityKey+"': "+(<any> existingSubEntity).length);
+					console.debug("Previous size of entities in game: "+(<any>window).game.rootEntity.users.length);
+					console.debug("this=", this);
+					(<any> this)[sourceEntityKey] = newSubEntities;
+					console.debug("New size of entities in game: "+(<any>window).game.rootEntity.users.length);
 				}
 				// Nullify value
 				else if (subEntityData == null) {
@@ -152,7 +188,10 @@ export default class Entity extends ComponentBag {
 				}
 				subEntity = existingSubEntity;
 			}
-			(<any> this)[entityKey] = subEntity;
+
+
+
+			(<any> this)[targetEntityKey] = subEntity;
 		}
 
 		// Raw properties

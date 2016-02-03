@@ -4,24 +4,37 @@ import * as Property from "./metamodel/Property";
 import IComponent from "../components/IComponent";
 import DecorationContext from "./DecorationContext";
 
+var log = false;
+
 export function EntityDecorator(constructor: new (...args: any[]) => Entity): void {
 	var anyConstructor = <any> constructor;
-	console.log("Declaring Entity!", anyConstructor.name);
+	if (log) console.log("Declaring Entity!", anyConstructor.name);
 	if (! Reflect.hasMetadata("properties", constructor)) {
 		Reflect.defineMetadata("properties", [], constructor);
 	}
-	console.log("Properties:", Reflect.getMetadata("properties", constructor));
+	if (log) console.log("Properties:", Reflect.getMetadata("properties", constructor));
 
 	DecorationContext.instance.entitiesClasses.push(constructor);
 }
 
+/**
+ * This decorator is used to declare an Entity class that is the local implementation of the shared class.
+ * @param entityClass
+ * @constructor
+ */
+export function EntityImplementationDecorator(entityClass: new (...args: any[]) => Entity): void {
+	var parentClass = (<any> entityClass.prototype).__proto__.constructor;
+	// Store the implementation class in the parent class, to be used upon deserialization.
+	Reflect.defineMetadata("implementationClass", entityClass, parentClass);
+}
+
 export function ComponentDecorator(constructor: new (...args: any[]) => IComponent): void {
 	var anyConstructor = <any> constructor;
-	console.log("Declaring Component!", anyConstructor.name);
+	if (log) console.log("Declaring Component!", anyConstructor.name);
 	if (! Reflect.hasMetadata("properties", constructor)) {
 		Reflect.defineMetadata("properties", [], constructor);
 	}
-	console.log("Properties:", Reflect.getMetadata("properties", constructor));
+	if (log) console.log("Properties:", Reflect.getMetadata("properties", constructor));
 
 	console.log("TODO: is it useful to declare components?");
 	DecorationContext.instance.componentsClasses.push(constructor);
@@ -29,11 +42,11 @@ export function ComponentDecorator(constructor: new (...args: any[]) => ICompone
 
 export function MapDecorator(constructor: new () => Map): void {
 	var anyConstructor = <any> constructor;
-	console.log("Declaring map!", anyConstructor.name);
+	if (log) console.log("Declaring map!", anyConstructor.name);
 	if (! Reflect.hasMetadata("properties", constructor)) {
 		Reflect.defineMetadata("properties", [], constructor);
 	}
-	console.log("Properties:", Reflect.getMetadata("properties", constructor));
+	if (log) console.log("Properties:", Reflect.getMetadata("properties", constructor));
 
 	DecorationContext.instance.mapsClasses.push(constructor);
 }
@@ -73,9 +86,7 @@ function PropertyDecorator(prototype: any, key: string, descriptor: (TypedProper
 		addProperty(constructor, key, Property.Shared);
 	}
 
-
-
-	console.log("Declaring Entity Property!", prototype.constructor.name, key);
+	if (log) console.log("Declaring Entity Property!", prototype.constructor.name, key);
 }
 
 function PropertyEntityDecorator(prototype: any, key: string,
@@ -94,7 +105,7 @@ function PropertyEntityDecorator(prototype: any, key: string,
 	// Create the property
 	addProperty(constructor, key, Property.PropertyEntity);
 
-	console.log("Declaring Entity PropertyReference!", (<any>prototype.constructor).name, key);
+	if (log) console.log("Declaring Entity PropertyReference!", (<any>prototype.constructor).name, key);
 }
 
 function PropertyReferenceDecorator(prototype: any, key: string,
@@ -109,11 +120,12 @@ function PropertyReferenceDecorator(prototype: any, key: string,
 	// Create the property
 	addProperty(constructor, key, Property.Reference);
 
-	console.log("Declaring Entity PropertyReference!", (<any>prototype.constructor).name, key);
+	if (log) console.log("Declaring Entity PropertyReference!", (<any>prototype.constructor).name, key);
 }
 
 export {
 	EntityDecorator as Entity,
+	EntityImplementationDecorator as EntityImplementation,
 	ComponentDecorator as Component,
 	MapDecorator as Map,
 	PropertyDecorator as Property,

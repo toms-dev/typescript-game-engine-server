@@ -53,7 +53,18 @@ export default class DecorationContext {
 			return null
 		}
 		if (matching.length == 1) {
-			return matching[0];
+			var match = matching[0];
+			// Check if there's a local implementation class
+			var implementationClass = Reflect.getMetadata("implementationClass", match);
+			if (implementationClass) {
+				console.debug("Got implementation class "+implementationClass.name+" for "+(<any> match).name);
+				return implementationClass;
+			}
+			else {
+				console.debug("No implementation class found for "+(<any> match).name);
+			}
+			// Otherwise return the raw class
+			return match;
 		}
 		throw new Error("Found "+matching.length+" matching classes for name: '"+className+"'");
 	}
