@@ -106,7 +106,7 @@ export default class Entity extends ComponentBag {
 		this._guid = state.guid;
 		this.type = null; // TODO: type.fromState()
 
-		var log = true;
+		var log = false;
 		if (log) console.log("Input state: ", state);
 
 		// Load properties
@@ -146,8 +146,6 @@ export default class Entity extends ComponentBag {
 					// Update all the entities in the collection
 					var subEntitiesData: any[] = subEntityData;
 					var newSubEntities: Entity[] = [];
-					console.debug("SubEntitiesData.length:", subEntitiesData.length);
-					console.debug("SubEntitiesData=", subEntitiesData);
 					subEntitiesData.forEach((singleEntityData: any) => {
 						// If we only have the GUID of the Entity, just preserve the entity.
 						var entity: Entity;
@@ -172,11 +170,6 @@ export default class Entity extends ComponentBag {
 					});
 					// Propagate the result to store it
 					existingSubEntity = newSubEntities;
-					console.debug("New size of entities '"+sourceEntityKey+"': "+(<any> existingSubEntity).length);
-					console.debug("Previous size of entities in game: "+(<any>window).game.rootEntity.users.length);
-					console.debug("this=", this);
-					(<any> this)[sourceEntityKey] = newSubEntities;
-					console.debug("New size of entities in game: "+(<any>window).game.rootEntity.users.length);
 				}
 				// Nullify value
 				else if (subEntityData == null) {
@@ -188,8 +181,6 @@ export default class Entity extends ComponentBag {
 				}
 				subEntity = existingSubEntity;
 			}
-
-
 
 			(<any> this)[targetEntityKey] = subEntity;
 		}

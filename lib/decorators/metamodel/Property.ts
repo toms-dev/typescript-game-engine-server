@@ -111,14 +111,12 @@ class EntityReferenceProperty extends SharedEntityProperty {
 		if (! ent) {
 			return null;
 		}
-		console.log("Got raw entity:", ent);
+
 		if (Array.isArray(ent)) {
-			console.log("IsArray!");
 			var result: any[] = [];
 			ent.forEach((e: Entity) => {
 				result.push(e.getGUID());
 			});
-			console.error("DEBUG: Result '"+this.name+"': "+result.length, result);
 			return result;
 		}
 		if (! (ent instanceof Entity)) {
