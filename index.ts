@@ -19,8 +19,8 @@ import DecorationContext from "./lib/decorators/DecorationContext";
 import Main from "./Main";
 
 // Hack to load typings when used in a lib ;) (as references are not allowed in index file)
-import Definitions from "./lib/_definitions";
-Definitions;
+/*import Definitions from "./lib/_definitions";
+Definitions;*/
 
 export {
 	Components, Declare, Math,

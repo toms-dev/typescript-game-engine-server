@@ -7,12 +7,14 @@
     "preserveConstEnums": true,
     "sourceMap": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "allowUnreachableCode": true
   },
   "exclude": [
     "client",
     "node_modules",
-    "typings",
+    "typings/browser.d.ts",
+    "typings/browser",
     "piratefight",
     "samples/piratefight",
     "samples/movingboxes/client"

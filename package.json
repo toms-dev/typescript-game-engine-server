@@ -3,12 +3,11 @@
   "version": "0.0.1",
   "dependencies": {
     "reflect-metadata": "^0.1.2",
-    "tsd": "^0.6.5",
-    "typescript": "^1.7.5",
-    "typescript-game-engine": "git+https://github.com/toms-dev/typescript-game-engine.git",
+    "typescript": "^1.8.0",
+    "typings": "^0.6.7",
     "websocket": "^1.0.22"
   },
-  "main":"index.js",
+  "main": "index.js",
   "scripts": {
     "test": "typings install && tsc"
   },
