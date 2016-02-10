@@ -2,14 +2,14 @@ import World from "../World";
 import {CommandRequestJSON, CommandResponseJSON} from "../commands/Command";
 import ObjectUtils from "../utils/Object";
 
-interface IController {
+export interface IController {
 	getWorldState(): any ;
 	doReceiveCommand(command: CommandRequestJSON): void;
 	removeChildController(controller: IController): void;
 	doDeactivate(now: number): void;
 }
 
-class BaseController implements IController {
+export class BaseController implements IController {
 
 	protected world: World;
 	private children: IController[];
@@ -27,12 +27,11 @@ class BaseController implements IController {
 	 * Initializes a child component from its class.
 	 * @param controller
 	 */
-	public addChildController(controller: Controller): void {
+	public addChildController(controller: BaseController): void {
 	//public addChildController(controllerClass: new (world: World, parent: IController) => Controller): void {
 		//var controller = new controllerClass(this.world, this);
-		controller.setContext(this.world, this);
+
 		this.children.push(controller);
-		controller.doActivate(this.world.now);
 	}
 
 	public removeChildController(controller: IController): void {
@@ -79,6 +78,19 @@ abstract class Controller extends BaseController implements IController {
 
 	constructor() {
 		super();
+	}
+
+	/**
+	 * Initializes a child component from its class.
+	 * @param controller
+	 */
+	public addChildController(controller: Controller): void {
+		//public addChildController(controllerClass: new (world: World, parent: IController) => Controller): void {
+		//var controller = new controllerClass(this.world, this);
+
+		super.addChildController(controller);
+		controller.setContext(this.world, this);
+		controller.doActivate(this.world.now);
 	}
 
 	setContext(world: World, parent: IController) {
@@ -128,4 +140,3 @@ abstract class Controller extends BaseController implements IController {
 }
 
 export default Controller;
-export {BaseController};

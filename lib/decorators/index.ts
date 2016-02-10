@@ -9,4 +9,6 @@ var Entity = Meta.Entity,
 	PropertyEntity = Meta.PropertyEntity,
 	PropertyReference = Meta.PropertyReference;
 
-export {Entity, EntityImplementation, Component, Map, Property, PropertyEntity, PropertyReference};
+//export {Entity, EntityImplementation, Component, Map, Property, PropertyEntity, PropertyReference};
+
+export default Meta;

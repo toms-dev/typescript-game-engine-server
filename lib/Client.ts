@@ -9,7 +9,7 @@ import Entity from "./Entity";
 import ClientController from "./components/generic/ClientController";
 import Controller from "./controllers/Controller";
 
-interface ServerState {
+export interface ServerState {
 	serverTime: number,
 	world: {
 		entities: any[],

@@ -40,7 +40,7 @@ class EntityProperty {
 		return (<any> entity)[this.name];
 	}
 
-	getValue(entity: Entity): any {
+	getStateValue(entity: Entity): any {
 		var raw = this.getRawValue(entity);
 		// Safety check
 		if (!this.isEntity && raw instanceof Entity) {
@@ -132,6 +132,6 @@ export {
 	SharedProperty as Shared,
 	ClientOnlyProperty as ClientOnly,
 	ServerOnlyProperty as ServerOnly,
+	SharedEntityProperty as PropertyEntity,
 	EntityReferenceProperty as Reference,
-	SharedEntityProperty as PropertyEntity
 }

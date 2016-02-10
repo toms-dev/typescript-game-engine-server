@@ -61,9 +61,9 @@ export default class GameServer {
 
 	// TODO: There should be the possibility to load different maps or have
 	// different maps instantiated.
-	loadProject(path:string):void {
+	loadProject(pathToConfigurationClass:string):void {
 		DecorationContext.start();
-		var configurationClass = require(path).default;
+		var configurationClass = require(pathToConfigurationClass).default;
 		this.configuration = new configurationClass();
 		this.context = DecorationContext.build();
 		console.log("Context loaded.");
@@ -169,6 +169,7 @@ export default class GameServer {
 		if (log) console.log("Delta: ", delta, " Time:\t"+now,"  lastUpdt:\t"+this.lastUpdate);
 
 		this.world.tick(delta, now);
+		this.rootEntity.tick(delta, now);
 
 		// TODO: Generic: tick subcomponents (eg: boardsSpawner.tick(delta, now) was here)
 

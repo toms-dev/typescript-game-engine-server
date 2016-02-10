@@ -19,7 +19,7 @@ export default class ComponentBag {
 		this.components.push(component);
 	}
 
-	tick(delta: number, now: number) {
+	tick(delta: number, now: number): void {
 		for (var i = 0; i < this.components.length; ++i) {
 			var comp = this.components[i];
 			comp.tick(delta, now);

@@ -1,8 +1,8 @@
-import IComponent from "./components/IComponent";
 import World from "./World";
 import EntityType from "./EntityType";
 import ComponentBag from "./components/ComponentBag";
 import NamedEntityType from "./NamedEntityType";
+import {BaseClass as Property} from "./decorators/metamodel/Property";
 
 import DecorationContext from "./decorators/DecorationContext";
 
@@ -12,9 +12,9 @@ export {EntityType};
 export default class Entity extends ComponentBag {
 
 	private static guidAutoIncrement = 1;
-	private _guid:number;
-	private type:EntityType;
-	private world:World;
+	public _guid: number;
+	private type: EntityType;
+	private world: World;
 
 	private static instances: {[guid: number]: Entity} = {};
 
@@ -42,6 +42,60 @@ export default class Entity extends ComponentBag {
 
 	public getGUID():number {
 		return this._guid;
+	}
+
+	/**
+	 * Returns all the entities declared by annotations, indexed by keys.
+	 * @returns {{}}
+	 */
+	public getSubEntitiesByKeys(): {[key: string]: Entity[]} {
+		var subEntities: {[key: string]: Entity[]} = {};
+		// Browse through the properties
+		var properties: Property[] = Reflect.getMetadata("properties", this.constructor);
+		properties.forEach((p: Property) => {
+			var propertyBuffer: Entity[];
+			var propertyValue = p.getRawValue(this);
+			// Can be single value or collection
+			if (Array.isArray(propertyValue)) {
+				var arrayValue = <Entity[]> propertyValue;
+				propertyBuffer = [].concat(arrayValue);
+			}
+			else {
+				var singleValue = <Entity> propertyValue;
+				// Skip non-entities
+				if (! (singleValue instanceof Entity)) {
+					return;
+				}
+				propertyBuffer = [singleValue];
+			}
+			subEntities[p.name] = propertyBuffer;
+		});
+
+		return subEntities;
+	}
+
+	/**
+	 * Returns all the entities declared by annotations in a single array.
+	 * @returns {Entity[]}
+	 */
+	public getAllSubEntities(): Entity[] {
+		var subEntities: Entity[] = [];
+		var subEntitiesByKey = this.getSubEntitiesByKeys();
+		for (var key in subEntitiesByKey) {
+			if (! subEntitiesByKey.hasOwnProperty(key)) continue;
+			var subEnts = subEntitiesByKey[key];
+			subEntities = subEntities.concat(subEnts);
+		}
+		return subEntities;
+	}
+
+	tick(delta: number, now: number): void {
+		super.tick(delta, now);
+		// Tick all the entities that were defined
+		var subEntities = this.getAllSubEntities();
+		subEntities.forEach((e: Entity) => {
+			e.tick(delta, now);
+		});
 	}
 
 	despawn():void {

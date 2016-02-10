@@ -2,15 +2,22 @@
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
+    "outDir": "./dist",
     "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true,
-    "sourceMap": true,
+    "allowUnreachableCode": true,
+    "inlineSourceMap": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "allowUnreachableCode": true
+    "declaration": true
   },
+  "files": [
+    "index.ts",
+    "typings/main.d.ts"
+  ]/*,
   "exclude": [
+    "dist",
     "client",
     "node_modules",
     "typings/browser.d.ts",
@@ -18,5 +25,5 @@
     "piratefight",
     "samples/piratefight",
     "samples/movingboxes/client"
-  ]
+  ]*/
 }

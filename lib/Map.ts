@@ -1,5 +1,3 @@
-
-import Entity from "./Entity";
 import World from "./World";
 
 /**
