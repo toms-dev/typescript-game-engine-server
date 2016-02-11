@@ -10,7 +10,7 @@
   "main": "dist/index.js",
   "typings": "typings.json",
   "scripts": {
-    "build": "tsc",
+    "build": "typings install && tsc",
     "prepublish": "typings install && npm run build",
     "test": "npm run prepublish"
   },
