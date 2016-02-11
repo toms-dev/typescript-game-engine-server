@@ -2,7 +2,7 @@
 
 import * as Components from "./lib/components/index";
 import Declare from "./lib/decorators/index";
-import * as Math from "./lib/math/index";
+import * as MathUtils from "./lib/math/index";
 
 import Entity from "./lib/Entity";
 import NamedEntityType from "./lib/NamedEntityType";
@@ -23,7 +23,7 @@ import Main from "./Main";
 Definitions;*/
 
 export {
-	Components, Declare, Math,
+	Components, Declare, MathUtils,
 	Entity, NamedEntityType,
 	World, Map,
 	Controller, CommandRequestJSON,
