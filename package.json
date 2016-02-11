@@ -14,10 +14,6 @@
     "prepublish": "typings install && npm run build",
     "test": "npm run prepublish"
   },
-  "files": [
-    "dist",
-    "typings.json"
-  ],
   "readme": "# Typescript Game Engine\r\n\r\nThis project is a component-based game engine framework that includes a _nodejs_ server and a client-side library.\r\nThe goal is to allow developers to quickly bootstrap a game, avoiding boilerplate code that is common to many game\r\nsystems.\r\n\r\nEverything is written in Typescript, in order to allow static typing checks that may be useful when working on large\r\nprojects, will still taking advantage of the flexibility of Javascript and of the community involvement on _nodejs_\r\npackages.\r\n\r\nAs of now, this is only a work-in-progress, so be patient and this may someday become a fully-featured game engine!\r\n\r\n",
   "readmeFilename": "README.md",
   "description": "This project is a component-based game engine framework that includes a _nodejs_ server and a client-side library.\r The goal is to allow developers to quickly bootstrap a game, avoiding boilerplate code that is common to many game\r systems.",
