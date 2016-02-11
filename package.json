@@ -7,7 +7,7 @@
     "typings": "^0.6.7",
     "websocket": "^1.0.22"
   },
-  "main": "dist/index.js",
+  "main": "index.ts",
   "typings": "typings.json",
   "scripts": {
     "build": "tsc",
