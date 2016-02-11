@@ -1,4 +1,4 @@
-import {Declare, Map} from "../../index";
+import {Declare, Map} from "../../src/index";
 
 @Declare.Map
 export default class EmptyMap extends Map {

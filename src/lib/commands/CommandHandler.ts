@@ -3,7 +3,7 @@ import CommandType from "./CommandType";
 import {
 	CommandResponseJSON,
 	CommandSuccessResponse,
-	CommandFailureResponse} from "../commands/Command";
+	CommandFailureResponse} from "./Command";
 
 
 export class Command {

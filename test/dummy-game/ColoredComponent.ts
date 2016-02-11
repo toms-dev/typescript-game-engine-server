@@ -1,4 +1,4 @@
-import {Declare, Components} from "../../index";
+import {Declare, Components} from "../../src/index";
 
 import IComponent = Components.IComponent;
 import Component = Components.Component;
